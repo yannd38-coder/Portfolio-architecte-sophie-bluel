@@ -1,3 +1,4 @@
+//RECUPERATION ET MISE PLACE DES PROJETS
 async function getWorks() {
     const response = await fetch("http://localhost:5678/api/works");
     const works = await response.json();//je viens interroger la base donnée pour une reponse en tableau d'objet
@@ -18,3 +19,10 @@ function displayWorks(works) {
     })
 }
 getWorks()
+//AJOUT DES FILTRES
+async function getCategories() {
+    const response = await fetch("http://localhost:5678/api/categories");
+    const categories = await.response.json();
+    console.log(categories)
+
+}
