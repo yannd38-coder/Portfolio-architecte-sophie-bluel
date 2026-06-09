@@ -19,9 +19,21 @@ function displayWorks(works) {
     })
 }
 getWorks()
+
 //AJOUT DES FILTRES
 async function getCategories() {
     const response = await fetch("http://localhost:5678/api/categories");
     const categories = await response.json();
     console.log(categories);
+    //let btnTous = document.getElementById("btnTous");
+    //btnTous.addEventListener("click", () => { console.log("j'ai cliqué") })
+    let listboutons = document.querySelectorAll("button")
+    for (let i = 0; i < listboutons.length; i++) 
+        {
+        let boutonActuel = listboutons[i]; console.log (boutonActuel);
+    boutonActuel.addEventListener("click",(event)=>{
+        monBouton=event.target
+        console.log(`Utilisateur clique sur le bouton: ${monBouton.id}`)})
+    }
 }
+getCategories()
