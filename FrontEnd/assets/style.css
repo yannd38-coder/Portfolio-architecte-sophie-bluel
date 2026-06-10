@@ -236,6 +236,19 @@ li:hover {
 
 }
 
+.filter {
+	display: flex;
+	width: 585%;
+	height: 38%;
+	/* top: 812px;
+	left: 427px; */
+	border-radius: 60px;
+	border-width: 1px;
+	/* angle: 0 deg; */
+	opacity: 1;
+
+}
+
 #contact {
 	width: 50%;
 	margin: auto;
@@ -289,4 +302,3 @@ footer nav ul {
 	justify-content: flex-end;
 	margin: 2em
 }
-

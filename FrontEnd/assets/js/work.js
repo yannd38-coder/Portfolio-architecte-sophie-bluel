@@ -1,7 +1,8 @@
+let works = [];
 //RECUPERATION ET MISE PLACE DES PROJETS
 async function getWorks() {
     const response = await fetch("http://localhost:5678/api/works");
-    const works = await response.json();//je viens interroger la base donnée pour une reponse en tableau d'objet
+    works = await response.json();//je viens interroger la base donnée pour une reponse en tableau d'objet
     console.log(works);
     displayWorks(works);
 }
@@ -25,15 +26,16 @@ async function getCategories() {
     const response = await fetch("http://localhost:5678/api/categories");
     const categories = await response.json();
     console.log(categories);
-    //let btnTous = document.getElementById("btnTous");
-    //btnTous.addEventListener("click", () => { console.log("j'ai cliqué") })
     let listboutons = document.querySelectorAll("button")
-    for (let i = 0; i < listboutons.length; i++) 
-        {
-        let boutonActuel = listboutons[i]; console.log (boutonActuel);
-    boutonActuel.addEventListener("click",(event)=>{
-        monBouton=event.target
-        console.log(`Utilisateur clique sur le bouton: ${monBouton.id}`)})
+    for (let i = 0; i < listboutons.length; i++) {
+        let boutonActuel = listboutons[i]; console.log(boutonActuel);
+        boutonActuel.addEventListener("click", (event) => {
+            const monBouton = event.target
+            console.log(`Utilisateur clique sur le bouton: ${monBouton.id}`);
+            if (monBouton.id === "btnObjets") { const objetsFiltres = works.filter(item => item.categoryId === 1); displayWorks(objetsFiltres); }
+            if (monBouton.id === "btnAppartements") { const objetsFiltres = works.filter(item => item.categoryId === 2); displayWorks(objetsFiltres); }
+            if (monBouton.id === "btnHotelsRestaurants") { const objetsFiltres = works.filter(item => item.categoryId === 3); displayWorks(objetsFiltres); }
+        })
     }
 }
 getCategories()
