@@ -33,8 +33,8 @@ async function getCategories() {
             const monBouton = event.target
             console.log(`Utilisateur clique sur le bouton: ${monBouton.id}`);
             if (monBouton.id === "btnObjets") { const objetsFiltres = works.filter(item => item.categoryId === 1); displayWorks(objetsFiltres); }
-            if (monBouton.id === "btnAppartements") { const objetsFiltres = works.filter(item => item.categoryId === 2); displayWorks(objetsFiltres); }
-            if (monBouton.id === "btnHotelsRestaurants") { const objetsFiltres = works.filter(item => item.categoryId === 3); displayWorks(objetsFiltres); }
+            if (monBouton.id === "btnAppartements") { const appartementsFiltres = works.filter(item => item.categoryId === 2); displayWorks(appartementsFiltres); }
+            if (monBouton.id === "btnHotelsRestaurants") { const restaurantsFiltres = works.filter(item => item.categoryId === 3); displayWorks(restaurantsFiltres); }
         })
     }
 }
