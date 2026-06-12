@@ -236,17 +236,41 @@ li:hover {
 
 }
 
+
 .filter {
-	display: flex;
-	width: 585%;
-	height: 38%;
-	/* top: 812px;
-	left: 427px; */
+	width: 585px;
+	height: 38px;
+}
+
+button {
+
+	/* width: 100px; */
+	height: 37px;
+	border-top: 813px;
+	border-left: 427px;
 	border-radius: 60px;
 	border-width: 1px;
-	/* angle: 0 deg; */
 	opacity: 1;
+	color: #1D6154;
+	background-color: #FFFFFF;
+	border: 1px solid
+}
 
+.filter button {
+	font-family: Syne;
+	font-weight: 700;
+	font-style: Bold;
+	font-size: 16px;
+	leading-trim: NONE;
+	line-height: 100%;
+	letter-spacing: 0%;
+	text-align: center;
+}
+
+button:hover {
+	background-color: #1D6154;
+	color: #FFFFFF;
+	opacity: 1;
 }
 
 #contact {

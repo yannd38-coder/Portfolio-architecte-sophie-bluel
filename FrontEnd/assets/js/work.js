@@ -26,16 +26,26 @@ async function getCategories() {
     const response = await fetch("http://localhost:5678/api/categories");
     const categories = await response.json();
     console.log(categories);
+    displayCategory()
+    sortWorksByCategory()
+}
+getCategories()
+function displayCategory() {
+
+}
+
+function sortWorksByCategory() {
     let listboutons = document.querySelectorAll("button")
     for (let i = 0; i < listboutons.length; i++) {
         let boutonActuel = listboutons[i]; console.log(boutonActuel);
         boutonActuel.addEventListener("click", (event) => {
             const monBouton = event.target
-            console.log(`Utilisateur clique sur le bouton: ${monBouton.id}`);
-            if (monBouton.id === "btnObjets") { const objetsFiltres = works.filter(item => item.categoryId === 1); displayWorks(objetsFiltres); }
-            if (monBouton.id === "btnAppartements") { const appartementsFiltres = works.filter(item => item.categoryId === 2); displayWorks(appartementsFiltres); }
-            if (monBouton.id === "btnHotelsRestaurants") { const restaurantsFiltres = works.filter(item => item.categoryId === 3); displayWorks(restaurantsFiltres); }
+            console.log(`Utilisateur clique sur le bouton: ${monBouton.getAttribute("data-categoryId")}`);
+            
+            // if (monBouton.id === "btnObjets") { const objetsFiltres = works.filter(item => item.categoryId === 1); displayWorks(objetsFiltres); }
+            // if (monBouton.id === "btnAppartements") { const appartementsFiltres = works.filter(item => item.categoryId === 2); displayWorks(appartementsFiltres); }
+            // if (monBouton.id === "btnHotelsRestaurants") { const restaurantsFiltres = works.filter(item => item.categoryId === 3); displayWorks(restaurantsFiltres); }
+            // if (monBouton.id === "btnTous"); { displayWorks(works); }
         })
     }
 }
-getCategories()
