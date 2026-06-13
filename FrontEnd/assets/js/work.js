@@ -17,6 +17,7 @@ function displayWorks(works) {
 
     works.forEach(work => {
         gallery.innerHTML += `<figure><img src= "${work.imageUrl}" alt="${work.title}"><figcaption>${work.title}</figcaption></figure>`
+   
     })
 }
 getWorks()
@@ -41,7 +42,19 @@ function sortWorksByCategory() {
         boutonActuel.addEventListener("click", (event) => {
             const monBouton = event.target
             console.log(`Utilisateur clique sur le bouton: ${monBouton.getAttribute("data-categoryId")}`);
-            
+            document.querySelector(".gallery").innerHTML = "";
+
+            // je récupère la valeur de l'attribut data-categoryId (1,2 OU 3)
+            const categoryIdChoisie = monBouton.dataset.categoryid;
+
+            if (categoryIdChoisie === "0") {
+                // si c'est le bouton Tous (data-categoryId="0")
+                displayWorks(works);
+            } else {
+                // filtre dynamique qui converti le texte en nombre avec Number()
+                const projetsFiltres = works.filter(item => item.categoryId === Number(categoryIdChoisie));
+                displayWorks(projetsFiltres);
+            }
             // if (monBouton.id === "btnObjets") { const objetsFiltres = works.filter(item => item.categoryId === 1); displayWorks(objetsFiltres); }
             // if (monBouton.id === "btnAppartements") { const appartementsFiltres = works.filter(item => item.categoryId === 2); displayWorks(appartementsFiltres); }
             // if (monBouton.id === "btnHotelsRestaurants") { const restaurantsFiltres = works.filter(item => item.categoryId === 3); displayWorks(restaurantsFiltres); }
