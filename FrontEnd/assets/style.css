@@ -218,6 +218,12 @@ li:hover {
 	margin-bottom: 0.5em;
 }
 
+#portfolio {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
 #portfolio h2 {
 	text-align: center;
 	margin-bottom: 1em;
@@ -241,7 +247,10 @@ li:hover {
 	width: 585px;
 	height: 38px;
 	display: flex;
-	gap: 10px;
+	gap: 15px;
+	justify-content: center;
+	margin-top: 30px;
+	margin-bottom: 50px;
 }
 
 button {
@@ -324,4 +333,26 @@ footer nav ul {
 	display: flex;
 	justify-content: flex-end;
 	margin: 2em
+}
+
+li .nav-login .h2 {
+	display: flex;
+	flex-direction: column;
+}
+
+#login form {
+	display: flex;
+	flex-direction: column;
+	width: 379px;
+	height: 51px;
+}
+
+#login form input {
+	width: 379px;
+	height: 51px;
+}
+
+#login {
+	display: flex;
+	flex-direction: column;
 }

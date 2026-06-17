@@ -38,24 +38,31 @@ function displayCategory() {
 }
 
 function sortWorksByCategory() {
-    let listboutons = document.querySelectorAll("button") //je declare une variable qui va recuperer tout les button du html
-    for (let i = 0; i < listboutons.length; i++) { //je crée la boucle pour parcourir tout les boutons de la boucle un a un. de 0 au dernier
-        let boutonActuel = listboutons[i]; console.log(boutonActuel);//je cree et actionne le bouton actuel pour pouvoir l'afficher à la console quand mis en action
-        boutonActuel.addEventListener("click", (event) => { //je cree un ecouteur de click sur boutonActuel, quand user click = le code dessous se lancera
-            const monBouton = event.target //permet au navigateur de savoir ou le user à cliqué
-            console.log(`Utilisateur clique sur le bouton: ${monBouton.getAttribute("data-categoryId")}`);//pour afficher à la console le num du bouton cliqué provenant du html
-            document.querySelector(".gallery").innerHTML = "";//permet de vider la gallery du html pour effacer les anciens projet et pour mise en place filtrage
-
+    //je declare une variable qui va recuperer tout les button du html
+    let listboutons = document.querySelectorAll("button")
+    //je crée la boucle pour parcourir tout les boutons de la boucle un a un. de 0 au dernier
+    for (let i = 0; i < listboutons.length; i++) {
+        //je cree et actionne le bouton actuel pour pouvoir l'afficher à la console quand mis en action
+        let boutonActuel = listboutons[i]; console.log(boutonActuel);
+        //je cree un ecouteur de click sur boutonActuel, quand user click = le code dessous se lancera
+        boutonActuel.addEventListener("click", (event) => {
+            //permet au navigateur de savoir ou le user à cliqué
+            const monBouton = event.target
+            //pour afficher à la console le num du bouton cliqué provenant du html
+            console.log(`Utilisateur clique sur le bouton: ${monBouton.getAttribute("data-categoryId")}`);
+            //permet de vider la gallery du html pour effacer les anciens projet et pour mise en place filtrage
+            document.querySelector(".gallery").innerHTML = "";
             // je récupère la valeur de l'attribut data-categoryId (1,2 OU 3)
             const categoryIdChoisie = monBouton.dataset.categoryid;
-
+            // le bouton Tous doit tout montrer(data-categoryId="0")
             if (categoryIdChoisie === "0") {
-                // le bouton Tous doit tout montrer(data-categoryId="0")
+                // filtre dynamique qui converti le texte en nombre avec Number()
                 displayWorks(works);
             } else {
-                // filtre dynamique qui converti le texte en nombre avec Number()
-                const projetsFiltres = works.filter(item => item.categoryId === Number(categoryIdChoisie));//Crée un nouveau tableau contenant uniquement les projets dont le "categoryId" correspond au numéro du bouton cliqué (converti en nombre avec number).
-                displayWorks(projetsFiltres);//appel la fonction seulement si la cat choisie n'est pas 0
+                //Crée un nouveau tableau contenant uniquement les projets dont le "categoryId" correspond au numéro du bouton cliqué (converti en nombre avec number).
+                const projetsFiltres = works.filter(item => item.categoryId === Number(categoryIdChoisie));
+                //appel la fonction seulement si la cat choisie n'est pas 0
+                displayWorks(projetsFiltres);
             }
         })
     }
@@ -64,17 +71,21 @@ function sortWorksByCategory() {
 
 // AJOUT DE LA PAGE LOGIN
 function LoginUser() {
-    const loginLink = document.getElementById("nav-login");//je recupere l'element nav-login
+    //je recupere l'element nav-login
+    const loginLink = document.getElementById("nav-login");
     if (loginLink) {
-        loginLink.addEventListener("click", (event) => { //ecouteur de click créer sur le loginform (le event permet d'avoir tout les infos sur le click)
-            displayloginForm(); //lance la fonction
+        //ecouteur de click créer sur le loginform (le event permet d'avoir tout les infos sur le click)
+        loginLink.addEventListener("click", (event) => {
+            //lance la fonction
+            displayloginForm();
         });
     }
 }
 function displayloginForm() {
-    const mainContainer = document.querySelector("main");//je selectionne le main dans le html pour le remplacer par le inner ci dessous
+    //je selectionne le main dans le html pour le remplacer par le inner ci dessous
+    const mainContainer = document.querySelector("main");
     mainContainer.innerHTML = `<section id="login">
-    <h2>Log in</h2 >
+    <h2>Log In</h2 >
         <form action="#" method="post">
             <label for="email">E-mail</label>
             <input type="email" name="email" id="email" required="required">
