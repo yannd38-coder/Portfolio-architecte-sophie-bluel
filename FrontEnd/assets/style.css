@@ -240,17 +240,16 @@ li:hover {
 .filter {
 	width: 585px;
 	height: 38px;
+	display: flex;
+	gap: 10px;
 }
 
 button {
 
 	/* width: 100px; */
 	height: 37px;
-	border-top: 813px;
-	border-left: 427px;
 	border-radius: 60px;
 	border-width: 1px;
-	opacity: 1;
 	color: #1D6154;
 	background-color: #FFFFFF;
 	border: 1px solid
