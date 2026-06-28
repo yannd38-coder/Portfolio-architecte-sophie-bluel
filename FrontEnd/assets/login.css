@@ -140,6 +140,7 @@ body {
     margin: auto;
     font-family: 'Work Sans';
     font-size: 14px;
+    background-color: #FFFEF8;
 }
 
 header {
@@ -149,7 +150,8 @@ header {
 }
 
 section {
-    margin: 50px 0
+    margin: 50px 0;
+
 }
 
 h1 {
@@ -172,7 +174,8 @@ h2 {
     font-family: 'Syne';
     font-weight: 700;
     font-size: 30px;
-    color: #1D6154
+    color: #1D6154;
+    margin-bottom: 10px;
 }
 
 nav ul {
@@ -332,7 +335,7 @@ input[type="submit"] {
 footer nav ul {
     display: flex;
     justify-content: flex-end;
-    margin: 2em
+    margin: 2em;
 }
 
 li .nav-login .h2 {
@@ -343,13 +346,21 @@ li .nav-login .h2 {
 #login form {
     display: flex;
     flex-direction: column;
-    width: 379px;
-    height: 51px;
+    width: 100%;
+    /* height: 51px; */
+    align-items: center;
+    gap: 10px;
 }
 
-#login form input {
-    width: 379px;
-    height: 51px;
+#login form input[type="email"],
+#login form input[type="password"] {
+    width: 25%;
+    height: 30px;
+    box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+    border: none;
+    background-color: #FFFFFF;
+    border-radius: 4px;
+    margin-bottom: 20px;
 }
 
 #login {
@@ -357,6 +368,22 @@ li .nav-login .h2 {
     flex-direction: column;
     text-align: center;
 }
-input.error{
-border: 2px solid rgb(214, 88, 88);
+
+input.error {
+    border: 2px solid rgb(214, 88, 88);
+}
+
+#login form a {
+    color: #3D3D3D;
+}
+
+#login form label {
+    font-family: Work Sans;
+    font-weight: 500;
+    /* font-style: Medium; */
+    font-size: 14px;
+    /* leading-trim: NONE;
+line-height: 100%;
+letter-spacing: 0%; */
+
 }
