@@ -1,4 +1,4 @@
-
+// const token=localStorage.getItem("token");
 let works = [];
 //RECUPERATION ET MISE PLACE DES PROJETS
 async function getWorks() {
