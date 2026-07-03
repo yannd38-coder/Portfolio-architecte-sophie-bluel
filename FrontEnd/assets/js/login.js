@@ -68,3 +68,10 @@ form.addEventListener('submit', async (event) => {
         errorGlobal.textContent = "Erreur de connexion serveur."
     }
 });
+
+
+
+
+
+
+

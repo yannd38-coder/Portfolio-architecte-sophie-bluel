@@ -145,7 +145,7 @@ body {
 header {
 	display: flex;
 	justify-content: space-between;
-	margin: 50px 0
+	margin: 50px 0;
 }
 
 section {
@@ -269,7 +269,6 @@ button {
 	font-weight: 700;
 	font-style: Bold;
 	font-size: 16px;
-	leading-trim: NONE;
 	line-height: 100%;
 	letter-spacing: 0%;
 	text-align: center;
@@ -355,4 +354,28 @@ li .nav-login .h2 {
 #login {
 	display: flex;
 	flex-direction: column;
+}
+
+#admin-banner {
+	background-color: #000000;
+	color: #ffffff;
+	text-align: center;
+	padding: 15px 0;
+	font-family: 'Work Sans', sans-serif;
+	font-size: 14px;
+	width: 100%;
+}
+
+.modify-btn {
+	font-family: 'Work Sans', sans-serif;
+	font-size: 14px;
+	font-weight: 400;
+	color: #000000;
+	margin-left: 20px;
+	cursor: pointer;
+
+}
+body{
+	/* margin: 0px; */
+	/* padding: 0px; */
 }
