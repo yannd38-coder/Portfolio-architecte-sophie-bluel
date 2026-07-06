@@ -1,36 +1,4 @@
-const token = localStorage.getItem("token"); //je dis a js de recuperer les données du token qui sont dans le localstorage 
-if (token) { //si il y a token alors (si pas null(en cas de 1e connexion ou de deconnexion ou nav privée))
 
-    const body = document.querySelector("body"); //je sélectionne élément <body> du DOM pour pouvoir manipuler juste après
-
-    const headerAdmin = document.createElement("div"); //je cree la <div> en mémoire dans JavaScript
-
-    headerAdmin.id = "admin-banner"; //j'attribues un ID pour le css
-
-    headerAdmin.innerHTML = '<i class="fa-regular fa-pen-to-square"></i> Mode édition'; //la j'integre l'icone dans le html dans la div contenu dans le body
-
-    body.prepend(headerAdmin);  //vu que j'ai crée l'element div, ici je demande de le greffer en haut de la page avec le prepend(en premier enfant) (headerAdmin)
-    const loginLink = document.querySelector("nav ul li a[href='login.html']");//je vais chercher la liste du dom 
-    if (loginLink) {
-        loginLink.textContent = "logout"; //ce que doit contenir le texte affiché
-        loginLink.href = "#" //le # permet de desactiver le renvoi vers index, ne se recharge pas et permet la deco
-        loginLink.addEventListener("click", () => {//j'ecoute le click pour savoir quand le users clique sur le bouton
-            localStorage.removeItem("token");//quand il clique je demande a js de retirer(supprimé) le token et ensuite de se recharger
-            window.location.reload();
-        });
-    }
-    const filterContainer = document.querySelector(".filter"); //je vais chercher lelement filter dans le html
-    if (filterContainer) {
-        filterContainer.style.display = "none"; //je veux ici faire disparaitre les filtres avec ddisplay none
-    }
-    const portfolioTitle = document.querySelector("#portfolio h2");//je vais chercher l'element h2 dans le portofolio dans le html
-    if (portfolioTitle) {
-        const modifyBtn = document.createElement("span");//je cree une span pour mettre le bouton dedans
-        modifyBtn.className = "modify-btn";//je crée une class pour le css
-        modifyBtn.innerHTML = '<i class="fa-regular fa-pen-to-square"></i> modifier';//je cree licone + le mot modifier que j'integre au html avec innerhtml
-        portfolioTitle.appendChild(modifyBtn);// je veux que ce bouton soit en fin dans la balise h2
-    }
-}
 
 
 let works = [];

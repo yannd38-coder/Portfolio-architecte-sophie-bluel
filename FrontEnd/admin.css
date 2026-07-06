@@ -1,0 +1,45 @@
+dialog#modal-container {
+    border-radius: 10px;
+    border: none;
+    background: white;
+    padding: 0;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /* translate va permettre de modifier la position modale */
+    z-index: 2000;
+    /* z-index gere la superposition, ici je veux que ce soit devant tout */
+}
+
+dialog#modal-container::backdrop {
+    background-color: rgba(0, 0, 0, 0.3);
+    width: 630px;
+    height: 688px;
+
+    border-radius: 10px;
+}
+
+/* le backdrop c'est arriere de la modale un peu grisé */
+.modal-wrapper {
+    width: 630px;
+    box-sizing: border-box;
+    padding: 30px;
+    background-color: #ffffff;
+}
+
+.modifyBtn {
+    color: black;
+}
+
+#modal-wrapper {
+    width: 100%;
+}
+
+#modal-gallery {
+    width: 630px;
+    height: 688px;
+
+    border-radius: 10px;
+
+}

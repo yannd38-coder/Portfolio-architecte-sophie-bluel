@@ -28,7 +28,6 @@ form.addEventListener('submit', async (event) => {
         baliseEmail.classList.add("error");
         console.log("Erreur : Le format de l'email n'est pas valide");
         errorEmail.textContent("Le format de l'email n'est pas valide")
-        // injecter dans le p un message derreur en disant que format mail pas bon 
     }
 
     if (password.trim() !== "") {
@@ -57,7 +56,9 @@ form.addEventListener('submit', async (event) => {
             });
         if (response.ok) {
             const data = await response.json(); //je transforme la reponse(token+userid) recu de l'api en json
-            localStorage.setItem("token", data.token); //je crée ici un enregistrement de la reponse de lapi.("la clé",et la valeur à enregistrer)   transfomrer la reponse en json, le token dans localStorage et ensuite je renvoie sur page accueil(windowlocation)  
+            localStorage.setItem("token", data.token); 
+//je crée ici un enregistrement de la reponse de lapi.("la clé",et la valeur à enregistrer)   
+// transformer la reponse en json, le token dans localStorage et ensuite je renvoie sur page accueil(windowlocation)  
             window.location.href = "index.html"; //je redige le user vers accueil
         } else {
             // message derreur dans le p disant que erreur dans id et ou mdp
