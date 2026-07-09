@@ -1,4 +1,3 @@
-
 // CREATION DU MODE EDITION
 const token = localStorage.getItem("token"); //je dis a js de recuperer les données du token qui sont dans le localstorage 
 if (token) { //si il y a token alors (si pas null(en cas de 1e connexion ou de deconnexion ou nav privée))
@@ -113,12 +112,66 @@ async function loadModalGallery() {
                 trashBtn.dataset.id = work.id;
                 // je génére directement dans code HTML un attribut data-id, pour permettre de transmettre l'id selectionné vers poubelle
                 // J' ajoute la variable "image" qu'on a créée juste au-dessus
+                trashBtn.addEventListener("click", async (e) => {
+                    e.preventDefault();
+                    const confirmDelete = confirm("Voulez-vous vraiment supprimer ce projet ?");
+                    if (confirmDelete) {
+                        // On passe l'id du projet et l'élément <figure> complet à supprimer du DOM
+                        await deleteWorks(work.id, figure);
+                    }
+                });
                 figure.appendChild(image);
                 figure.appendChild(trashBtn);
                 modalGallery.appendChild(figure);
+
             });
         }
     } catch (error) {
         console.error("Erreur lors du chargement de la page:", error);
+    }
+}
+// FONCTION SUPPRESSION
+async function deleteWorks(id, figureElement) {
+    const token = localStorage.getItem("token"); // Je récupère le token
+
+    try {
+        const response = await fetch(`http://localhost:5678/api/works/${id}`, {
+            method: "DELETE",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": "application/json"
+            }
+        });
+
+        if (response.ok) {
+            // Si c'est ok supprime l'élément du dom de la modale
+            figureElement.remove();
+
+            //  Récupère les données à jour pour la galerie principale
+            try {
+                const res = await fetch("http://localhost:5678/api/works");
+                const newWorks = await res.json();
+
+                const mainGallery = document.querySelector(".gallery");
+                if (mainGallery) {
+                    mainGallery.innerHTML = "";
+                }
+
+                // envoi du nouveau tableau a la fonction globale
+                if (typeof window.displayWorks === "function") {
+                    window.displayWorks(newWorks);
+                }
+            } catch (err) {
+                console.error("Erreur lors du rafraichissement de la galerie :", err);
+            }
+
+            console.log(`Le projet ${id} a été supprimé avec succès.`);
+        } else {
+            // Gere les echecs de l'API (ex: token KO, mauvaise id...)
+            console.error("Impossible de supprimer le projet. Code erreur :", response.status);
+        }
+    } catch (error) {
+        // Intercepte les pannes de réseau / serveur éteint
+        console.error("Erreur réseau globale lors de la suppression :", error);
     }
 }

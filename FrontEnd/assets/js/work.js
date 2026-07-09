@@ -63,4 +63,5 @@ function sortWorksByCategory() {
             }
         })
     }
+    window.displayWorks = displayWorks;
 }
