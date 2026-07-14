@@ -82,7 +82,7 @@ async function loadModalGallery() {
     const modalGallery = document.querySelector(".modal-gallery");
     if (!modalGallery) return;
     // le !modalgallery, ! veut dire faux/nexiste pas. 
-    //     // donc si pas de modalGallery dans le html tu arretes le chargement avec le return
+  // donc si pas de modalGallery dans le html, js arretes le chargement avec le return
     modalGallery.innerHTML = "";
     // je vide la galerie pour eviter doublons au chargement
     try {
@@ -139,7 +139,9 @@ async function deleteWorks(id, figureElement) {
             method: "DELETE",
             headers: {
                 "Authorization": `Bearer ${token}`,
+                // bearer = pour authenfier la personne qui veut supprimer, il demande le token
                 "Content-Type": "application/json"
+                // pas de body ici car pas de nvelle donnée a envoyer(type formulaire tableau etc) vu que delete
             }
         });
 
@@ -147,7 +149,7 @@ async function deleteWorks(id, figureElement) {
             // Si c'est ok supprime l'élément du dom de la modale
             figureElement.remove();
 
-            //  Récupère les données à jour pour la galerie principale
+            //  je dis :récupère les données à jour pour la galerie principale
             try {
                 const res = await fetch("http://localhost:5678/api/works");
                 const newWorks = await res.json();

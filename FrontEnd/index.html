@@ -14,6 +14,7 @@
 		integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
 		crossorigin="anonymous" referrerpolicy="no-referrer" />
 	<link rel="stylesheet" href="./assets/style.css">
+	<link rel="stylesheet" href="./admin.css">
 </head>
 
 <body>
@@ -77,25 +78,25 @@
 			</ul>
 		</nav>
 	</footer>
-	<dialog id="modal-container"> 
+	<dialog id="modal-container">
 		<!-- je crée ici le container principale en dialog -->
-		<div class="modal-wrapper"> 
+		<div class="modal-wrapper">
 			<!-- la div qui reprend tout les elements de la modale -->
-			<div class="modal-navigation"> 
+			<div class="modal-navigation">
 				<!-- la div qui s'occupe des boutons dans la modale -->
 				<button id="modal-back" class="modal-btn" style="visibility: hidden;"><i
-						class="fa-solid fa-arrow-left"></i></button> 
-						<!-- je cache la fleche pour la premiere fonction de la modale -->
+						class="fa-solid fa-arrow-left"></i></button>
+				<!-- je cache la fleche pour la premiere fonction de la modale -->
 				<button id="modal-close" class="modal-btn"><i class="fa-solid fa-xmark"></i></button>
 			</div>
 			<div class="modal-gallery" class="modal-view">
 				<!-- div de la galerie -->
 
 			</div>
-			<div id="modal-add" class="modal-view"> 
+			<div id="modal-add" class="modal-view">
 				<!-- div de quand user doit ajouter des photos -->
 				<h3>Galerie photo</h3>
-				<div class="modal-gallery"></div> 
+				<div class="modal-gallery"></div>
 				<!-- c'est dans cette div "vide" que je placerais les photos de l'api -->
 				<button id="btn-add-form" class="modal-submit-btn">Ajouter une photo</button>
 			</div>
