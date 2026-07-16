@@ -79,34 +79,41 @@
 		</nav>
 	</footer>
 	<dialog id="modal-container">
-		<!-- je crée ici le container principale en dialog -->
+		<!-- Container principal de la modale -->
 		<div class="modal-wrapper">
 			<!-- la div qui reprend tout les elements de la modale -->
 			<div class="modal-navigation">
 				<!-- la div qui s'occupe des boutons dans la modale -->
-				<button id="modal-back" class="modal-btn" style="visibility: hidden;"><i
-						class="fa-solid fa-arrow-left"></i></button>
-				<!-- je cache la fleche pour la premiere fonction de la modale -->
-				<button id="modal-close" class="modal-btn"><i class="fa-solid fa-xmark"></i></button>
-			</div>
-			<div class="modal-gallery" class="modal-view">
-				<!-- div de la galerie -->
-
+				<button id="modal-back" class="modal-btn" style="visibility: hidden;">
+					<i class="fa-solid fa-arrow-left"></i>
+					<!-- je cache la fleche pour la premiere fonction de la modale -->
+				</button>
+				<button id="modal-close" class="modal-btn">
+					<i class="fa-solid fa-xmark"></i>
+				</button>
 			</div>
 			<div id="modal-add" class="modal-view">
 				<!-- div de quand user doit ajouter des photos -->
+
 				<h3>Galerie photo</h3>
+				<!-- l'unique div où le JS va injecter les photos -->
 				<div class="modal-gallery"></div>
+				<!-- div de la galerie -->
 				<!-- c'est dans cette div "vide" que je placerais les photos de l'api -->
+				<hr class="modal-separator">
+				<!-- la ligne de separation grisé dans la modale -->
 				<button id="btn-add-form" class="modal-submit-btn">Ajouter une photo</button>
 			</div>
-			<div id="" modal-view-add class="modal-view" style="display: none;">
-				<!-- ajout des photos -->
-				<h3>Ajout photos</h3>
+			<div id="modal-view-add" class="modal-view" style="display: none;">
+				<h3>Ajout photo</h3>
 				<form id="modal-add-form">
+					<!-- futurs inputs pour l'ajout d'image iront ici -->
+
+					<hr class="modal-separator">
 					<input type="submit" value="Valider" class="modal-submit-btn" disabled>
 				</form>
 			</div>
+
 		</div>
 	</dialog>
 	<script src="./assets/js/work.js"></script>

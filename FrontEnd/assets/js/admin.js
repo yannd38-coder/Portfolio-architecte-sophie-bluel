@@ -51,12 +51,7 @@ const closeModal = document.getElementById("modal-close");
 if (modifyButton) {
     modifyButton.addEventListener("click", () => {
         if (modal) {
-            modal.showModal(); loadModalGallery(); modal.style.backgroundColor = "red"; const modalWrapper = document.querySelector(".modal-wrapper");
-            if (modalWrapper) {
-                modalWrapper.style.width = "500px";
-                // je modifie la TAILLE de la modale directement ici pour le moment avant css?
-                // la COULEUR de l'arriere plan=>style.css=>dialog#modal-container::backdrop
-            }
+            modal.showModal(); loadModalGallery();
         }
     });
     // la fonction showModal va permettre d'ouvrir modal et gerer overlay
