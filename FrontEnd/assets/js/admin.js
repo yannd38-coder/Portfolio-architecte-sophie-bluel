@@ -1,49 +1,46 @@
-// CREATION DU MODE EDITION
-const token = localStorage.getItem("token"); //je dis a js de recuperer les données du token qui sont dans le localstorage 
-if (token) { //si il y a token alors (si pas null(en cas de 1e connexion ou de deconnexion ou nav privée))
+// 1. CREATION DU MODE EDITION
+// =========================================================================
+const token = localStorage.getItem("token");
 
-    const body = document.querySelector("body"); //je sélectionne élément <body> du DOM pour pouvoir manipuler/integrer juste après
+if (token) {
+    const body = document.querySelector("body");
+    const headerAdmin = document.createElement("div");
 
-    const headerAdmin = document.createElement("div"); //je cree la <div> en mémoire dans JavaScript
-
-    // creation de la banniere en haut de page noire
-    headerAdmin.id = "admin-banner"; //j'attribues un ID pour le css
-
+    headerAdmin.id = "admin-banner";
     headerAdmin.innerHTML = '<i class="fa-regular fa-pen-to-square"></i> Mode édition';
-    //la j'integre l'icone dans le html dans la div contenu dans le body
-
     body.prepend(headerAdmin);
-    //vu que j'ai crée l'element div, ici je demande de le greffer en haut de la page avec le prepend(en premier enfant) (headerAdmin)
 
-    // creation du bouton logout
-    const loginLink = document.querySelector("nav ul li a[href='login.html']");//je vais chercher la liste du dom 
+    // Bouton logout
+    const loginLink = document.querySelector("nav ul li a[href='login.html']");
     if (loginLink) {
-        loginLink.textContent = "logout"; //ce que doit contenir le texte affiché
-        loginLink.href = "#" //le # permet de desactiver le renvoi vers index, ne se recharge pas et permet la deco
-        loginLink.addEventListener("click", () => {//j'ecoute le click pour savoir quand le users clique sur le bouton
-            localStorage.removeItem("token");//quand il clique je demande a js de retirer(supprimé) le token et ensuite de se recharger
+        loginLink.textContent = "logout";
+        loginLink.href = "#";
+        loginLink.addEventListener("click", () => {
+            localStorage.removeItem("token");
             window.location.reload();
         });
     }
 
-    // suppression des filtres
-    const filterContainer = document.querySelector(".filter"); //je vais chercher lelement filter dans le html
+    // suppression des filtres (correction du sélecteur potentiel .filters)
+    const filterContainer = document.querySelector(".filter") || document.querySelector(".filters");
     if (filterContainer) {
-        filterContainer.style.display = "none"; //je veux ici faire disparaitre les filtres avec le style display egal à none
+        filterContainer.style.display = "none";
     }
 
-    // creation du bouton modifier+icone
-    const portfolioTitle = document.querySelector("#portfolio h2");//je vais chercher l'element h2 dans le portofolio dans le html
+    // bouton modifier + icone
+    const portfolioTitle = document.querySelector("#portfolio h2");
     if (portfolioTitle) {
-        const modifyBtn = document.createElement("span");//je cree une span pour mettre le bouton dedans
-        modifyBtn.className = "modifyBtn";//je crée une class pour le css
+        const modifyBtn = document.createElement("span");
+        modifyBtn.className = "modifyBtn";
         modifyBtn.style.cursor = "pointer";
-        modifyBtn.innerHTML = '<i class="fa-regular fa-pen-to-square"></i> modifier';//je cree licone + le mot modifier que j'integre au html avec innerhtml
-        portfolioTitle.appendChild(modifyBtn);// je veux que ce bouton soit en fin dans la balise h2
+        modifyBtn.innerHTML = '<i class="fa-regular fa-pen-to-square"></i> modifier';
+        portfolioTitle.appendChild(modifyBtn);
     }
 }
-// modale
 
+
+// 2. OUVERTURE / FERMETURE DE LA FENÊTRE MODALE
+// =========================================================================
 const modal = document.getElementById("modal-container");
 const modifyButton = document.querySelector(".modifyBtn");
 const closeModal = document.getElementById("modal-close");
@@ -51,100 +48,90 @@ const closeModal = document.getElementById("modal-close");
 if (modifyButton) {
     modifyButton.addEventListener("click", () => {
         if (modal) {
-            modal.showModal(); loadModalGallery();
-        }
-    });
-    // la fonction showModal va permettre d'ouvrir modal et gerer overlay
-}
-if (closeModal) {
-    closeModal.addEventListener("click", () => { modal.close(); });
-    // ferme modale et masque overlay
-}
-if (modal) {
-    // 
-    modal.addEventListener("click", (event) => {
-        if (event.target === modal) {
-            modal.close();
-            // ici je crée la fermeture au click en dehors de la modale
-            // jecoute le clic, je recup tout les infos(la touches tapé, les coordonée du click) de event pour savoir ou users click
-            // je dmande alors est ce que le clic(target) correspond strict à modal si non alors close
+            if (viewGallery && viewAddPhoto && btnBack) {
+                viewGallery.style.display = "block";
+                viewAddPhoto.style.display = "none";
+                btnBack.style.visibility = "hidden";
+            }
+            modal.showModal();
+            loadModalGallery();
         }
     });
 }
 
-// AJOUT DES PHOTOS MODIFIABLE
+if (closeModal) {
+    closeModal.addEventListener("click", () => {
+        modal.close();
+    });
+}
+
+if (modal) {
+    modal.addEventListener("click", (event) => {
+        if (event.target === modal) {
+            modal.close();
+        }
+    });
+}
+
+// 3. RECUPERATION ET AFFICHAGE DE LA GALERIE DE LA MODALE
+// =========================================================================
 async function loadModalGallery() {
-    const modalGallery = document.querySelector(".modal-gallery");
+    const modalGallery = document.querySelector("#modal-add .modal-gallery");
     if (!modalGallery) return;
-    // le !modalgallery, ! veut dire faux/nexiste pas. 
-  // donc si pas de modalGallery dans le html, js arretes le chargement avec le return
+
     modalGallery.innerHTML = "";
-    // je vide la galerie pour eviter doublons au chargement
+
     try {
         const response = await fetch("http://localhost:5678/api/works");
-        // j'appelle l'api et si la reponse est ok alors
         if (response.ok) {
             const works = await response.json();
 
             works.forEach(work => {
-                // works.forEach= je prends le tableau works de l'api qui contient les images et je demande a js
-                // dappliquer pour chaque projet( chaque work) la fonction qui est dans les accolades
-                // je crée 3 boite noire ou j'integre une boite qui contient les boites des images et l'icone
-
                 const figure = document.createElement("figure");
-                // je crée en memoire une balise html figure pendant que j'ajoute image/poubelle avant de mettre dans vrai html
-                // comme cela si besoin de modifier le html pas de blocage pour l'utilisateur (plus souple si en memoire js)
                 const image = document.createElement("img");
-                // pareil que pour figure
                 image.src = work.imageUrl;
-                // recupere dans le tableau work lelement image url
                 image.alt = work.title;
 
                 const trashBtn = document.createElement("button");
                 trashBtn.className = "trash-btn";
-                // class pour le css
                 trashBtn.innerHTML = '<i class="fa-solid fa-trash-can"></i>';
                 trashBtn.dataset.id = work.id;
-                // je génére directement dans code HTML un attribut data-id, pour permettre de transmettre l'id selectionné vers poubelle
-                // J' ajoute la variable "image" qu'on a créée juste au-dessus
+
                 trashBtn.addEventListener("click", async (e) => {
                     e.preventDefault();
                     const confirmDelete = confirm("Voulez-vous vraiment supprimer ce projet ?");
                     if (confirmDelete) {
-                        // On passe l'id du projet et l'élément <figure> complet à supprimer du DOM
                         await deleteWorks(work.id, figure);
                     }
                 });
+
                 figure.appendChild(image);
                 figure.appendChild(trashBtn);
                 modalGallery.appendChild(figure);
-
             });
         }
     } catch (error) {
         console.error("Erreur lors du chargement de la page:", error);
     }
 }
-// FONCTION SUPPRESSION
+
+// 4. SUPPRESSION D'UN PROJET
+// =========================================================================
 async function deleteWorks(id, figureElement) {
-    const token = localStorage.getItem("token"); // Je récupère le token
+    const token = localStorage.getItem("token");
 
     try {
         const response = await fetch(`http://localhost:5678/api/works/${id}`, {
             method: "DELETE",
             headers: {
                 "Authorization": `Bearer ${token}`,
-                // bearer = pour authenfier la personne qui veut supprimer, il demande le token
                 "Content-Type": "application/json"
-                // pas de body ici car pas de nvelle donnée a envoyer(type formulaire tableau etc) vu que delete
             }
         });
 
         if (response.ok) {
-            // Si c'est ok supprime l'élément du dom de la modale
             figureElement.remove();
 
-            //  je dis :récupère les données à jour pour la galerie principale
             try {
                 const res = await fetch("http://localhost:5678/api/works");
                 const newWorks = await res.json();
@@ -154,7 +141,6 @@ async function deleteWorks(id, figureElement) {
                     mainGallery.innerHTML = "";
                 }
 
-                // envoi du nouveau tableau a la fonction globale
                 if (typeof window.displayWorks === "function") {
                     window.displayWorks(newWorks);
                 }
@@ -164,11 +150,127 @@ async function deleteWorks(id, figureElement) {
 
             console.log(`Le projet ${id} a été supprimé avec succès.`);
         } else {
-            // Gere les echecs de l'API (ex: token KO, mauvaise id...)
             console.error("Impossible de supprimer le projet. Code erreur :", response.status);
         }
     } catch (error) {
-        // Intercepte les pannes de réseau / serveur éteint
         console.error("Erreur réseau globale lors de la suppression :", error);
     }
 }
+
+// 5. NAVIGATION INTERNE DE LA MODALE
+// =========================================================================
+const btnAddForm = document.getElementById("btn-add-form");
+const btnBack = document.getElementById("modal-back");
+const viewGallery = document.getElementById("modal-add");
+const viewAddPhoto = document.getElementById("modal-view-add");
+
+if (btnAddForm && btnBack && viewGallery && viewAddPhoto) {
+    btnAddForm.addEventListener("click", () => {
+        viewGallery.style.display = "none";
+        viewAddPhoto.style.display = "block";
+        btnBack.style.visibility = "visible";
+    });
+
+    btnBack.addEventListener("click", () => {
+        viewGallery.style.display = "block";
+        viewAddPhoto.style.display = "none";
+        btnBack.style.visibility = "hidden";
+        resetFormPreview(); // Vide les champs si on fait retour
+    });
+}
+
+// 6. GESTION DU FORMULAIRE D'AJOUT (PREVIEW UNIFIÉE & VALIDATION)
+// =========================================================================
+const fileInput = document.getElementById("file-upload");
+const imagePreview = document.getElementById("image-preview");
+const modalFormContainer = document.getElementById("modal-add-form");
+
+// je récupère les éléments textuels internes au conteneur du formulaire
+const uploadElements = modalFormContainer ? modalFormContainer.querySelectorAll(".upload-container > i, .upload-container > label, .upload-container > p") : [];
+const formTitle = document.getElementById("form-title");
+const selectCategory = document.getElementById("form-category");
+const btnSubmitPhoto = document.getElementById("btn-submit-photo");
+
+// Fonction de vérification globale de validité du formulaire
+function checkFormValidity() {
+    if (!btnSubmitPhoto) return;
+
+    if (fileInput && fileInput.files[0] &&
+        formTitle && formTitle.value.trim() !== "" &&
+        selectCategory && selectCategory.value !== "") {
+
+        btnSubmitPhoto.disabled = false;
+    } else {
+        btnSubmitPhoto.disabled = true;
+    }
+}
+// ecouteur unique pour la sélection de fichier et génération de l'aperçu
+if (fileInput && imagePreview) {
+    fileInput.addEventListener("change", (e) => {
+        const file = e.target.files[0];
+
+        if (file) {
+            if (file.size > 4 * 1024 * 1024) {
+                alert("L'image est trop lourde (4 Mo maximum).");
+                fileInput.value = "";
+                checkFormValidity();
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                imagePreview.src = event.target.result;
+                imagePreview.style.display = "block";
+
+                uploadElements.forEach(el => el.style.display = "none");
+            };
+            reader.readAsDataURL(file);
+        }
+        checkFormValidity();
+    });
+}
+
+// ecouteurs de saisie textuelle pour débloquer le bouton de validation
+if (formTitle) {
+    formTitle.addEventListener("input", checkFormValidity);
+}
+if (selectCategory) {
+    selectCategory.addEventListener("change", checkFormValidity);
+}
+
+// Fonction de réinitialisation complète du formulaire d'ajout
+function resetFormPreview() {
+    if (modalFormContainer) {
+        modalFormContainer.reset();
+    }
+    if (imagePreview) {
+        imagePreview.src = "#";
+        imagePreview.style.display = "none";
+    }
+    uploadElements.forEach(el => el.style.display = "block");
+    if (btnSubmitPhoto) {
+        btnSubmitPhoto.disabled = true;
+    }
+}
+// recuperation dynamique des categories
+async function loadCategoriesForSelect() {
+    const selectCategory = document.getElementById("form-category");
+    if (!selectCategory) return;
+
+    try {
+        const response = await fetch("http://localhost:5678/api/categories")
+        if (response.ok) {
+            const categories = await response.json();
+            categories.forEach(category => {
+                const option = document.createElement("option");
+                option.value = category.id; // pour que l'api attende l'ID numérique de la catégorie (1, 2, 3...)
+                option.textContent = category.name;
+                selectCategory.appendChild(option);
+            });
+        }
+    }
+    catch (error) {
+        console.error("Erreur lors de la récuperation de la catégorie:", error);
+    }
+}
+loadCategoriesForSelect();

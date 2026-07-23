@@ -106,12 +106,35 @@
 			</div>
 			<div id="modal-view-add" class="modal-view" style="display: none;">
 				<h3>Ajout photo</h3>
-				<form id="modal-add-form">
-					<!-- futurs inputs pour l'ajout d'image iront ici -->
+		<form id="modal-add-form">
+    <!-- Zone d'upload et d'aperçu de l'image -->
+    <div class="upload-container">
+        <i class="fa-regular fa-image image-icon"></i>
+        <label class="btn-upload" for="file-upload">+ Ajouter photo</label>
+        <input type="file" id="file-upload" accept="image/png, image/jpeg" style="display: none;" required />
+        <p class="upload-info">jpg, png : 4mo max</p>
+        <!-- Balise img dédiée à la preview avec FileReader -->
+        <img id="image-preview" src="#" alt="Aperçu de la photo" style="display: none;" />
+    </div>
 
-					<hr class="modal-separator">
-					<input type="submit" value="Valider" class="modal-submit-btn" disabled>
-				</form>
+    <!-- Champ de saisie pour le Titre -->
+    <div class="form-group">
+        <label for="form-title">Titre</label>
+        <input type="text" id="form-title" required>
+    </div>
+
+    <!-- Champ de sélection pour la Catégorie -->
+    <div class="form-group">
+        <label for="form-category">Catégorie</label>
+        <select id="form-category" required>
+            <option value=""></option>
+        </select>
+    </div>
+
+    <hr class="modal-separator">
+    <!-- Ajout de l'id "btn-submit-photo" pour le cibler facilement en JS -->
+    <input type="submit" id="btn-submit-photo" value="Valider" class="modal-submit-btn" disabled>
+</form>
 			</div>
 
 		</div>
@@ -121,3 +144,11 @@
 </body>
 
 </html>
+
+
+		<form id="modal-add-form">
+					<!-- futurs inputs pour l'ajout d'image iront ici -->
+
+					<hr class="modal-separator">
+					<input type="submit" value="Valider" class="modal-submit-btn" disabled>
+				</form>
