@@ -70,7 +70,6 @@
 			</form>
 		</section>
 	</main>
-
 	<footer>
 		<nav>
 			<ul>
@@ -78,63 +77,57 @@
 			</ul>
 		</nav>
 	</footer>
+
 	<dialog id="modal-container">
 		<!-- Container principal de la modale -->
 		<div class="modal-wrapper">
 			<!-- la div qui reprend tout les elements de la modale -->
 			<div class="modal-navigation">
 				<!-- la div qui s'occupe des boutons dans la modale -->
-				<button id="modal-back" class="modal-btn" style="visibility: hidden;">
+				<button id="modal-back" class="modal-btn" type="button" style="visibility: hidden;">
 					<i class="fa-solid fa-arrow-left"></i>
 					<!-- je cache la fleche pour la premiere fonction de la modale -->
 				</button>
-				<button id="modal-close" class="modal-btn">
+				<button id="modal-close" class="modal-btn" type="button">
 					<i class="fa-solid fa-xmark"></i>
 				</button>
 			</div>
 			<div id="modal-add" class="modal-view">
-				<!-- div de quand user doit ajouter des photos -->
-
 				<h3>Galerie photo</h3>
-				<!-- l'unique div où le JS va injecter les photos -->
 				<div class="modal-gallery"></div>
-				<!-- div de la galerie -->
-				<!-- c'est dans cette div "vide" que je placerais les photos de l'api -->
 				<hr class="modal-separator">
-				<!-- la ligne de separation grisé dans la modale -->
-				<button id="btn-add-form" class="modal-submit-btn">Ajouter une photo</button>
+				<button id="btn-add-form" class="modal-submit-btn" type="button">Ajouter une photo</button>
 			</div>
 			<div id="modal-view-add" class="modal-view" style="display: none;">
-				<h3>Ajout photo</h3>
-		<form id="modal-add-form">
-    <!-- Zone d'upload et d'aperçu de l'image -->
-    <div class="upload-container">
-        <i class="fa-regular fa-image image-icon"></i>
-        <label class="btn-upload" for="file-upload">+ Ajouter photo</label>
-        <input type="file" id="file-upload" accept="image/png, image/jpeg" style="display: none;" required />
-        <p class="upload-info">jpg, png : 4mo max</p>
-        <!-- Balise img dédiée à la preview avec FileReader -->
-        <img id="image-preview" src="#" alt="Aperçu de la photo" style="display: none;" />
-    </div>
 
-    <!-- Champ de saisie pour le Titre -->
-    <div class="form-group">
-        <label for="form-title">Titre</label>
-        <input type="text" id="form-title" required>
-    </div>
+				<form id="modal-add-form">
+					<!-- Zone d'upload et d'aperçu de l'image -->
+					<div class="upload-container">
+						<i class="fa-regular fa-image image-icon"></i>
+						<label class="btn-upload" for="file-upload">+ Ajouter photo</label>
+						<input type="file" id="file-upload" accept="image/png, image/jpeg" style="display: none;"
+							required />
+						<p class="upload-info">jpg, png : 4mo max</p>
+						<!-- Balise img dédiée à la preview avec FileReader -->
+						<img id="image-preview" src="#" alt="Aperçu de la photo" style="display: none;" />
+						 <p id="error-fileAdd" class="missed-fileAdd"></p>
+					</div>
 
-    <!-- Champ de sélection pour la Catégorie -->
-    <div class="form-group">
-        <label for="form-category">Catégorie</label>
-        <select id="form-category" required>
-            <option value=""></option>
-        </select>
-    </div>
-
-    <hr class="modal-separator">
-    <!-- Ajout de l'id "btn-submit-photo" pour le cibler facilement en JS -->
-    <input type="submit" id="btn-submit-photo" value="Valider" class="modal-submit-btn" disabled>
-</form>
+					<div class="form-group">
+						<label for="form-title">Titre</label>
+						<input type="text" id="form-title" required>
+						 <p id="error-title" class="missed-text"></p>
+					</div>
+					<div class="form-group">
+						<label for="form-category">Catégorie</label>
+						<select id="form-category" required>
+							<option value=""></option>
+							 <p id="error-category" class="missed-category"></p>
+						</select>
+					</div>
+					<hr class="modal-separator">
+					<input type="submit" id="btn-submit-photo" value="Valider" class="modal-submit-btn" disabled>
+				</form>
 			</div>
 
 		</div>
@@ -144,11 +137,3 @@
 </body>
 
 </html>
-
-
-		<form id="modal-add-form">
-					<!-- futurs inputs pour l'ajout d'image iront ici -->
-
-					<hr class="modal-separator">
-					<input type="submit" value="Valider" class="modal-submit-btn" disabled>
-				</form>

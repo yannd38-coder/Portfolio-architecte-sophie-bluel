@@ -1,7 +1,21 @@
-// 1. CREATION DU MODE EDITION
-// =========================================================================
 const token = localStorage.getItem("token");
+const modal = document.getElementById("modal-container");
+const closeModal = document.getElementById("modal-close");
+const btnAddForm = document.getElementById("btn-add-form");
+const btnBack = document.getElementById("modal-back");
+const viewGallery = document.getElementById("modal-add");
+const viewAddPhoto = document.getElementById("modal-view-add");
+const fileInput = document.getElementById("file-upload");
+const imagePreview = document.getElementById("image-preview");
+const modalFormContainer = document.getElementById("modal-add-form");
+const formTitle = document.getElementById("form-title");
+const selectCategory = document.getElementById("form-category");
+const btnSubmitPhoto = document.getElementById("btn-submit-photo");
 
+const uploadElements = modalFormContainer ? modalFormContainer.querySelectorAll(".upload-container > i, .upload-container > label, .upload-container > p") : [];
+// si modalformcontainer est trouvé alors lance recherche sinon les [] veulent dire que renvoie tableau vide pour eviter bug/plantage 
+
+// 1. CREATION DU MODE EDITION
 if (token) {
     const body = document.querySelector("body");
     const headerAdmin = document.createElement("div");
@@ -21,7 +35,7 @@ if (token) {
         });
     }
 
-    // suppression des filtres (correction du sélecteur potentiel .filters)
+    // suppression des filtres (correction du sélecteur .filters)
     const filterContainer = document.querySelector(".filter") || document.querySelector(".filters");
     if (filterContainer) {
         filterContainer.style.display = "none";
@@ -37,13 +51,28 @@ if (token) {
         portfolioTitle.appendChild(modifyBtn);
     }
 }
+// 5. NAVIGATION INTERNE DE LA MODALE
 
+
+if (btnAddForm && btnBack && viewGallery && viewAddPhoto) {
+    btnAddForm.addEventListener("click", () => {
+        viewGallery.style.display = "none";
+        viewAddPhoto.style.display = "block";
+        btnBack.style.visibility = "visible";
+    });
+
+    btnBack.addEventListener("click", () => {
+        viewGallery.style.display = "block";
+        viewAddPhoto.style.display = "none";
+        btnBack.style.visibility = "hidden";
+        resetFormPreview(); // vide les champs si on fait retour
+    });
+}
 
 // 2. OUVERTURE / FERMETURE DE LA FENÊTRE MODALE
-// =========================================================================
-const modal = document.getElementById("modal-container");
+
 const modifyButton = document.querySelector(".modifyBtn");
-const closeModal = document.getElementById("modal-close");
+
 
 if (modifyButton) {
     modifyButton.addEventListener("click", () => {
@@ -73,8 +102,8 @@ if (modal) {
     });
 }
 
+
 // 3. RECUPERATION ET AFFICHAGE DE LA GALERIE DE LA MODALE
-// =========================================================================
 async function loadModalGallery() {
     const modalGallery = document.querySelector("#modal-add .modal-gallery");
     if (!modalGallery) return;
@@ -93,6 +122,7 @@ async function loadModalGallery() {
                 image.alt = work.title;
 
                 const trashBtn = document.createElement("button");
+                trashBtn.type = "button";
                 trashBtn.className = "trash-btn";
                 trashBtn.innerHTML = '<i class="fa-solid fa-trash-can"></i>';
                 trashBtn.dataset.id = work.id;
@@ -116,7 +146,6 @@ async function loadModalGallery() {
 }
 
 // 4. SUPPRESSION D'UN PROJET
-// =========================================================================
 async function deleteWorks(id, figureElement) {
     const token = localStorage.getItem("token");
 
@@ -157,58 +186,84 @@ async function deleteWorks(id, figureElement) {
     }
 }
 
-// 5. NAVIGATION INTERNE DE LA MODALE
-// =========================================================================
-const btnAddForm = document.getElementById("btn-add-form");
-const btnBack = document.getElementById("modal-back");
-const viewGallery = document.getElementById("modal-add");
-const viewAddPhoto = document.getElementById("modal-view-add");
-
-if (btnAddForm && btnBack && viewGallery && viewAddPhoto) {
-    btnAddForm.addEventListener("click", () => {
-        viewGallery.style.display = "none";
-        viewAddPhoto.style.display = "block";
-        btnBack.style.visibility = "visible";
-    });
-
-    btnBack.addEventListener("click", () => {
-        viewGallery.style.display = "block";
-        viewAddPhoto.style.display = "none";
-        btnBack.style.visibility = "hidden";
-        resetFormPreview(); // Vide les champs si on fait retour
-    });
-}
 
 // 6. GESTION DU FORMULAIRE D'AJOUT (PREVIEW UNIFIÉE & VALIDATION)
-// =========================================================================
-const fileInput = document.getElementById("file-upload");
-const imagePreview = document.getElementById("image-preview");
-const modalFormContainer = document.getElementById("modal-add-form");
+async function loadCategory() {
+    const categorySelect = document.getElementById("form-category");
+    if (!categorySelect) return;
 
-// je récupère les éléments textuels internes au conteneur du formulaire
-const uploadElements = modalFormContainer ? modalFormContainer.querySelectorAll(".upload-container > i, .upload-container > label, .upload-container > p") : [];
-const formTitle = document.getElementById("form-title");
-const selectCategory = document.getElementById("form-category");
-const btnSubmitPhoto = document.getElementById("btn-submit-photo");
+    try {
+        const response = await fetch("http://localhost:5678/api/categories");
+        if (response.ok) {
+            const categories = await response.json();
+            categorySelect.innerHTML = '<option value=""></option>';
+            categories.forEach(
+                category => {
+                    const option = document.createElement("option");
+                    option.value = category.id;
+                    option.textContent = category.name;
+                    categorySelect.appendChild(option);
+                });
+        }
+    }
+    catch (error) {
+        console.error("erreur lors de la recuperation des catégories:", error);
+    }
+}
+loadCategory();
 
-// Fonction de vérification globale de validité du formulaire
+// verif globale de validité du formulaire
 function checkFormValidity() {
     if (!btnSubmitPhoto) return;
-
-    if (fileInput && fileInput.files[0] &&
-        formTitle && formTitle.value.trim() !== "" &&
-        selectCategory && selectCategory.value !== "") {
-
+    const errorFileAdd = document.getElementById("error-fileAdd");
+    const errorTitle = document.getElementById("error-title");
+    const errorCategory = document.getElementById("error-category");
+    //    verif de l'ajout du fichier
+    const isFileValid = fileInput && fileInput.files && fileInput.files[0];
+    if (!isFileValid) {
+        if (errorFileAdd) errorFileAdd.textContent = "veuillez ajouter un fichier";
+    }
+    else {
+        if (errorFileAdd) errorFileAdd.textContent = "";
+    }
+    // verif du titre
+    const isTitleValid = formTitle && formTitle.value.trim() !== "";
+    if (!isTitleValid) {
+        if (errorTitle) errorTitle.textContent = "veuillez remplir le champ manquant";
+    }
+    else {
+        if (errorTitle) errorTitle.textContent = "";
+    }
+    // verif category
+    const isCategoryValid = selectCategory && selectCategory.value !== "";
+    if (!isCategoryValid) {
+        if (errorCategory) errorCategory.textContent = "veuillez selectionner une categorie";
+    }
+    else {
+        if (errorCategory) errorCategory.textContent = "";
+    }
+    // verif finale et globale
+    if (isFileValid && isTitleValid && isCategoryValid) {
         btnSubmitPhoto.disabled = false;
     } else {
         btnSubmitPhoto.disabled = true;
     }
+    // ecouteur d'evenements pour titre+category
+    if (formTitle) {
+        formTitle.addEventListener("input", checkFormValidity);
+    }
+
+    if (selectCategory) {
+        selectCategory.addEventListener("change", checkFormValidity);
+    }
 }
-// ecouteur unique pour la sélection de fichier et génération de l'aperçu
+
+// ecouteur unique pour la selection du fichier et generer l'aperçu
 if (fileInput && imagePreview) {
     fileInput.addEventListener("change", (e) => {
         const file = e.target.files[0];
-
+        // ici je verifie si les fichier existe dans le dom, puis ecoute le changement/selection du fichier 
+        // puis recup fichier selectionné par user le 1er et le seul
         if (file) {
             if (file.size > 4 * 1024 * 1024) {
                 alert("L'image est trop lourde (4 Mo maximum).");
@@ -216,61 +271,106 @@ if (fileInput && imagePreview) {
                 checkFormValidity();
                 return;
             }
-
+            // Affiche une alerte à l'utilisateur, réinitialise l'input (fileInput.value = ""), 
+            // relance la vérification du formulaire pour désactiver le bouton de validation (checkFormValidity()), 
+            // et stoppe la fonction (return).
             const reader = new FileReader();
+            // (reader) permet de lire les fichiers presents sur l'ordinateur de user
             reader.onload = (event) => {
                 imagePreview.src = event.target.result;
+                // ca donne le lien temporaire géneré a la balise <img>
                 imagePreview.style.display = "block";
-
                 uploadElements.forEach(el => el.style.display = "none");
             };
             reader.readAsDataURL(file);
+            // je dis a js de prendre le fichier image et de le transformer en un lien temporaire pour que le navigateur puisse l'afficher
+        }
+        else {
+            imagePreview.src = "";
+            imagePreview.style.display = "none";
+            uploadElements.forEach(el => el.style.display = "block");
         }
         checkFormValidity();
     });
-}
-
-// ecouteurs de saisie textuelle pour débloquer le bouton de validation
-if (formTitle) {
-    formTitle.addEventListener("input", checkFormValidity);
-}
-if (selectCategory) {
-    selectCategory.addEventListener("change", checkFormValidity);
-}
-
-// Fonction de réinitialisation complète du formulaire d'ajout
-function resetFormPreview() {
-    if (modalFormContainer) {
-        modalFormContainer.reset();
-    }
-    if (imagePreview) {
-        imagePreview.src = "#";
-        imagePreview.style.display = "none";
-    }
-    uploadElements.forEach(el => el.style.display = "block");
-    if (btnSubmitPhoto) {
-        btnSubmitPhoto.disabled = true;
-    }
-}
-// recuperation dynamique des categories
-async function loadCategoriesForSelect() {
-    const selectCategory = document.getElementById("form-category");
-    if (!selectCategory) return;
-
-    try {
-        const response = await fetch("http://localhost:5678/api/categories")
-        if (response.ok) {
-            const categories = await response.json();
-            categories.forEach(category => {
-                const option = document.createElement("option");
-                option.value = category.id; // pour que l'api attende l'ID numérique de la catégorie (1, 2, 3...)
-                option.textContent = category.name;
-                selectCategory.appendChild(option);
-            });
+    // le rechargement de la page après depot image
+    const form = document.getElementById("modal-add-form")
+    form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        form.reset();
+        if (imagePreview) {
+            imagePreview.src = "";
+            imagePreview.style.display = "none";
         }
-    }
-    catch (error) {
-        console.error("Erreur lors de la récuperation de la catégorie:", error);
-    }
+        if (uploadElements) {
+            uploadElements.forEach(el => el.style.display = "block");
+        }
+        checkFormValidity();
+    });
+
 }
-loadCategoriesForSelect();
+
+// mise a jour galerie
+
+modalFormContainer.addEventListener('submit', async (event) => {
+    event.preventDefault(); console.log("pas de rechargement de page ici");
+    errorEmail.textContent = ""
+    errorPassword.textContent = ""
+    errorGlobal.textContent = ""
+    // je crée les regle qui va etre injecté dans les if
+    const email = baliseEmail.value;
+    const password = balisePassword.value;
+    console.log(password);
+    console.log(email);
+
+
+    const emailRegExp = new RegExp("^[a-z0-9._-]+@[a-z0-9._-]+\\.[a-z]+$");
+    if (emailRegExp.test(email)) {
+        baliseEmail.classList.remove("error");
+        console.log("le format est valide")
+    } else {
+        baliseEmail.classList.add("error");
+        console.log("Erreur : Le format de l'email n'est pas valide");
+        errorEmail.textContent("Le format de l'email n'est pas valide")
+    }
+
+    if (password.trim() !== "") {
+        balisePassword.classList.remove("error");
+        console.log("le format est valide")
+    } else {
+        balisePassword.classList.add("error");
+        console.log("Erreur : Le mot de passe ne peut pas être vide");
+        errorPassword.textContent("Erreur : Le mot de passe ne peut pas être vide")
+    }
+    if (email === "" || password === "") {
+        errorGlobal.textContent("Erreur :Veuillez remplir tout les champs")
+        // créer un p dans le html avec id error message, qui se rempli avec text content ici
+        return
+    }
+    
+    try {
+        const response = await fetch("http://localhost:5678/api/users/login",
+            {
+                method: "POST",
+                body: JSON.stringify(
+                    {
+                        email: email,
+                        password: password
+                    }),
+                headers: { "Content-Type": "application/json" }
+            });
+        if (response.ok) {
+            const data = await response.json(); //je transforme la reponse(token+userid) recu de l'api en json
+            localStorage.setItem("token", data.token); 
+//je crée ici un enregistrement de la reponse de lapi.("la clé",et la valeur à enregistrer)   
+// transformer la reponse en json, le token dans localStorage et ensuite je renvoie sur page accueil(windowlocation)  
+            window.location.href = "index.html"; //je redirige le user vers accueil
+        } else {
+            // message derreur dans le p disant que erreur dans id et ou mdp
+            errorGlobal.textContent = "Erreur dans l'identifiant ou le mot de passe."
+        }
+    } catch (error) {
+        console.log(error)
+        errorGlobal.textContent = "Erreur de connexion serveur."
+    }
+    
+});

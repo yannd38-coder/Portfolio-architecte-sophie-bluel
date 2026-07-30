@@ -43,6 +43,7 @@ form.addEventListener('submit', async (event) => {
         // créer un p dans le html avec id error message, qui se rempli avec text content ici
         return
     }
+    
     try {
         const response = await fetch("http://localhost:5678/api/users/login",
             {
@@ -59,7 +60,7 @@ form.addEventListener('submit', async (event) => {
             localStorage.setItem("token", data.token); 
 //je crée ici un enregistrement de la reponse de lapi.("la clé",et la valeur à enregistrer)   
 // transformer la reponse en json, le token dans localStorage et ensuite je renvoie sur page accueil(windowlocation)  
-            window.location.href = "index.html"; //je redige le user vers accueil
+            window.location.href = "index.html"; //je redirige le user vers accueil
         } else {
             // message derreur dans le p disant que erreur dans id et ou mdp
             errorGlobal.textContent = "Erreur dans l'identifiant ou le mot de passe."
@@ -68,6 +69,7 @@ form.addEventListener('submit', async (event) => {
         console.log(error)
         errorGlobal.textContent = "Erreur de connexion serveur."
     }
+    
 });
 
 
