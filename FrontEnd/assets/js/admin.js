@@ -248,14 +248,6 @@ function checkFormValidity() {
     } else {
         btnSubmitPhoto.disabled = true;
     }
-    // ecouteur d'evenements pour titre+category
-    if (formTitle) {
-        formTitle.addEventListener("input", checkFormValidity);
-    }
-
-    if (selectCategory) {
-        selectCategory.addEventListener("change", checkFormValidity);
-    }
 }
 
 // ecouteur unique pour la selection du fichier et generer l'aperçu
@@ -271,9 +263,6 @@ if (fileInput && imagePreview) {
                 checkFormValidity();
                 return;
             }
-            // Affiche une alerte à l'utilisateur, réinitialise l'input (fileInput.value = ""), 
-            // relance la vérification du formulaire pour désactiver le bouton de validation (checkFormValidity()), 
-            // et stoppe la fonction (return).
             const reader = new FileReader();
             // (reader) permet de lire les fichiers presents sur l'ordinateur de user
             reader.onload = (event) => {
@@ -292,85 +281,78 @@ if (fileInput && imagePreview) {
         }
         checkFormValidity();
     });
-    // le rechargement de la page après depot image
-    const form = document.getElementById("modal-add-form")
-    form.addEventListener("submit", async (event) => {
-        event.preventDefault();
-        form.reset();
-        if (imagePreview) {
-            imagePreview.src = "";
-            imagePreview.style.display = "none";
-        }
-        if (uploadElements) {
-            uploadElements.forEach(el => el.style.display = "block");
-        }
-        checkFormValidity();
-    });
-
 }
 
-// mise a jour galerie
+
+// le  non rechargement de la page après depot image
+//     const form = document.getElementById("modal-add-form")
+//     form.addEventListener("submit", async (event) => {
+//         event.preventDefault();
+//         form.reset();
+//         if (imagePreview) {
+//             imagePreview.src = "";
+//             imagePreview.style.display = "none";
+//         }
+//         if (uploadElements) {
+//             uploadElements.forEach(el => el.style.display = "block");
+//         }
+//         checkFormValidity();
+//     });
+
+
+// mise a jour galerie avec ajout de la nouvelle photo
 
 modalFormContainer.addEventListener('submit', async (event) => {
-    event.preventDefault(); console.log("pas de rechargement de page ici");
-    errorEmail.textContent = ""
-    errorPassword.textContent = ""
-    errorGlobal.textContent = ""
-    // je crée les regle qui va etre injecté dans les if
-    const email = baliseEmail.value;
-    const password = balisePassword.value;
-    console.log(password);
-    console.log(email);
+    event.preventDefault();
+    console.log("-----test des selecteurs------")
+    console.log("element fileInput", fileInput);
+    console.log("fichier selectionné", fileInput ? fileInput.files[0] : "file input introuvable");
+    console.log("valeur du titre", formTitle ? formTitle.value : "formTitle introuvable");
+    console.log("valeur categorie", selectCategory ? selectCategory.value : "selectCategory introuvable")
+    console.log("---------");
+    const formData = new FormData();
+    // FormData me permet regrouper toutes les infos du formulaire
+    formData.append("image", fileInput.files[0]);
+    // append permet ajout avec la clé (le nom vu dans les swagger)+la valeur
+    formData.append("title", formTitle.value.trim());
+    formData.append("category", parseInt(selectCategory.value));
+    const token = localStorage.getItem("token");
 
-
-    const emailRegExp = new RegExp("^[a-z0-9._-]+@[a-z0-9._-]+\\.[a-z]+$");
-    if (emailRegExp.test(email)) {
-        baliseEmail.classList.remove("error");
-        console.log("le format est valide")
-    } else {
-        baliseEmail.classList.add("error");
-        console.log("Erreur : Le format de l'email n'est pas valide");
-        errorEmail.textContent("Le format de l'email n'est pas valide")
-    }
-
-    if (password.trim() !== "") {
-        balisePassword.classList.remove("error");
-        console.log("le format est valide")
-    } else {
-        balisePassword.classList.add("error");
-        console.log("Erreur : Le mot de passe ne peut pas être vide");
-        errorPassword.textContent("Erreur : Le mot de passe ne peut pas être vide")
-    }
-    if (email === "" || password === "") {
-        errorGlobal.textContent("Erreur :Veuillez remplir tout les champs")
-        // créer un p dans le html avec id error message, qui se rempli avec text content ici
-        return
-    }
-    
     try {
-        const response = await fetch("http://localhost:5678/api/users/login",
-            {
-                method: "POST",
-                body: JSON.stringify(
-                    {
-                        email: email,
-                        password: password
-                    }),
-                headers: { "Content-Type": "application/json" }
-            });
+        const response = await fetch("http://localhost:5678/api/works", {
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${token}`
+            },
+            body: formData
+        });
         if (response.ok) {
-            const data = await response.json(); //je transforme la reponse(token+userid) recu de l'api en json
-            localStorage.setItem("token", data.token); 
-//je crée ici un enregistrement de la reponse de lapi.("la clé",et la valeur à enregistrer)   
-// transformer la reponse en json, le token dans localStorage et ensuite je renvoie sur page accueil(windowlocation)  
-            window.location.href = "index.html"; //je redirige le user vers accueil
-        } else {
-            // message derreur dans le p disant que erreur dans id et ou mdp
-            errorGlobal.textContent = "Erreur dans l'identifiant ou le mot de passe."
+            const newWork = await response.json(); 
+            modalFormContainer.reset();
+            if (imagePreview) {
+                imagePreview.src = "";
+                imagePreview.style.display = "none";
+            }
+            if (uploadElements) {
+                uploadElements.forEach(el => el.style.display = "block");
+            }
+            await loadGallery();
         }
-    } catch (error) {
-        console.log(error)
-        errorGlobal.textContent = "Erreur de connexion serveur."
+        else {
+            console.error("erreur lors du depot du projet");
+        }
     }
-    
+    catch (error) {
+        console.error("erreur de connexion serveur", error);
+    }
+
 });
+// ecouteur d'evenements pour titre+category
+if (formTitle) {
+    formTitle.addEventListener("input", checkFormValidity);
+}
+
+if (selectCategory) {
+    selectCategory.addEventListener("change", checkFormValidity);
+}
+

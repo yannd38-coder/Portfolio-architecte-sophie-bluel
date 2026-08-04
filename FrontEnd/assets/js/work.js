@@ -1,6 +1,3 @@
-
-
-
 let works = [];
 //RECUPERATION ET MISE PLACE DES PROJETS
 async function getWorks() {
@@ -36,7 +33,7 @@ function displayCategory() {
 
 function sortWorksByCategory() {
     //je declare une variable qui va recuperer tout les button du html
-    let listboutons = document.querySelectorAll("button")
+    let listboutons = document.querySelectorAll("filters button")
     //je crée la boucle pour parcourir tout les boutons de la boucle un a un. de 0 au dernier
     for (let i = 0; i < listboutons.length; i++) {
         //je cree et actionne le bouton actuel pour pouvoir l'afficher à la console quand mis en action

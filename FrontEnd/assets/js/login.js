@@ -23,27 +23,28 @@ form.addEventListener('submit', async (event) => {
     const emailRegExp = new RegExp("^[a-z0-9._-]+@[a-z0-9._-]+\\.[a-z]+$");
     if (emailRegExp.test(email)) {
         baliseEmail.classList.remove("error");
-        console.log("le format est valide")
+        console.log("le format est valide");
     } else {
         baliseEmail.classList.add("error");
         console.log("Erreur : Le format de l'email n'est pas valide");
-        errorEmail.textContent("Le format de l'email n'est pas valide")
+        errorEmail.textContent("Le format de l'email n'est pas valide");
     }
 
     if (password.trim() !== "") {
         balisePassword.classList.remove("error");
-        console.log("le format est valide")
+        console.log("le format est valide");
+        if (errorPassword) errorPassword.textContent = "";
     } else {
         balisePassword.classList.add("error");
         console.log("Erreur : Le mot de passe ne peut pas être vide");
-        errorPassword.textContent("Erreur : Le mot de passe ne peut pas être vide")
+        if (errorPassword) errorPassword.textContent = "Erreur : Le mot de passe ne peut pas être vide";
     }
     if (email === "" || password === "") {
-        errorGlobal.textContent("Erreur :Veuillez remplir tout les champs")
+        errorGlobal.textContent("Erreur :Veuillez remplir tout les champs");
         // créer un p dans le html avec id error message, qui se rempli avec text content ici
-        return
+        return;
     }
-    
+
     try {
         const response = await fetch("http://localhost:5678/api/users/login",
             {
@@ -57,9 +58,9 @@ form.addEventListener('submit', async (event) => {
             });
         if (response.ok) {
             const data = await response.json(); //je transforme la reponse(token+userid) recu de l'api en json
-            localStorage.setItem("token", data.token); 
-//je crée ici un enregistrement de la reponse de lapi.("la clé",et la valeur à enregistrer)   
-// transformer la reponse en json, le token dans localStorage et ensuite je renvoie sur page accueil(windowlocation)  
+            localStorage.setItem("token", data.token);
+            //je crée ici un enregistrement de la reponse de lapi.("la clé",et la valeur à enregistrer)   
+            // transformer la reponse en json, le token dans localStorage et ensuite je renvoie sur page accueil(windowlocation)  
             window.location.href = "index.html"; //je redirige le user vers accueil
         } else {
             // message derreur dans le p disant que erreur dans id et ou mdp
@@ -69,7 +70,7 @@ form.addEventListener('submit', async (event) => {
         console.log(error)
         errorGlobal.textContent = "Erreur de connexion serveur."
     }
-    
+
 });
 
 
