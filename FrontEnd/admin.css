@@ -3,28 +3,15 @@ dialog#modal-container {
     border: none;
     background: white;
     padding: 0;
-    /* position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    translate va permettre de modifier la position modale */
     z-index: 2000;
-    /* z-index gere la superposition, ici je veux que ce soit devant tout */
 }
 
 dialog#modal-container::backdrop {
     background-color: rgba(0, 0, 0, 0.3);
-    /* width: 100%;
-    height: 100%;
-    en %
-    border-radius: 10px; */
 }
-
-/* le backdrop c'est arriere de la modale un peu grisé */
 
 .modal-wrapper {
     width: 630px;
-    /* max-width: 90%; */
     box-sizing: border-box;
     padding: 60px 105px;
     background-color: #ffffff;
@@ -81,11 +68,8 @@ dialog#modal-container::backdrop {
 .modal-gallery {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    /* ici 5 colonnes de taille egales */
     column-gap: 10px;
-    /* espace horizontal */
     row-gap: 10px;
-    /* espace vertical */
     margin-top: 45px;
     margin-bottom: 45px;
 }
@@ -95,7 +79,6 @@ dialog#modal-container::backdrop {
     margin: 0;
     padding: 0;
     position: relative;
-    /* permet d'ajuster pour la poublle a inserer a coté image */
 }
 
 .modal-gallery figure img {
@@ -141,7 +124,6 @@ body {
     margin: 0px 0 45px 0;
 }
 
-/* La grille de 5 colonnes corrigée */
 .modal-gallery {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
@@ -156,7 +138,6 @@ body {
     margin: 0;
     padding: 0;
     position: relative;
-    /* Positionnement de référence pour la poubelle */
 }
 
 .modal-gallery figure img {
@@ -166,7 +147,6 @@ body {
     display: block;
 }
 
-/* Bouton poubelle sur chaque image */
 .modal-gallery .trash-btn {
     position: absolute;
     top: 6px;
@@ -185,14 +165,12 @@ body {
     padding: 0;
 }
 
-/* Ligne de séparation grise de la maquette */
 .modal-separator {
     width: 100%;
     border: none;
     border-top: 1px solid #B3B3B3;
     margin: 0 0 25px 0;
 }
-
 
 .modal-submit-btn {
     font-family: 'Syne', sans-serif;
@@ -203,7 +181,6 @@ body {
     width: 262px;
     height: 36px;
     margin: 0 auto;
-    /* Centre le bouton horizontalement */
     border-radius: 60px;
     font-size: 14px;
     cursor: pointer;
@@ -225,7 +202,6 @@ h3 {
     font-weight: 400;
     font-style: Regular;
     font-size: 26px;
-    leading-trim: NONE;
     line-height: 100%;
     letter-spacing: 0%;
     text-align: center;
@@ -234,7 +210,6 @@ h3 {
 
 #modal-container {
     overflow: hidden;
-    /* Empêche l'apparition de la scrollbar sur la boîte globale */
     padding: 30px;
 }
 
@@ -256,8 +231,3 @@ h3 {
     background-color: rgba(255, 255, 255, 1);
     border-radius: 3px;
 }
-
-
-
-
-/* modal-add-form upload-container btn-upload file-upload image-preview */

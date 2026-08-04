@@ -1,19 +1,16 @@
-
 const form = document.querySelector('form');
 const baliseEmail = document.getElementById("email");
 const balisePassword = document.getElementById("password");
-
 const errorEmail = document.getElementById("error-email");
 const errorPassword = document.getElementById("error-password");
 const errorGlobal = document.getElementById("error-global");
-// je vais chercher les elements dans le html
+
 
 form.addEventListener('submit', async (event) => {
     event.preventDefault(); console.log("pas de rechargement de page ici");
     errorEmail.textContent = ""
     errorPassword.textContent = ""
     errorGlobal.textContent = ""
-    // je crée les regle qui va etre injecté dans les if
     const email = baliseEmail.value;
     const password = balisePassword.value;
     console.log(password);
@@ -41,7 +38,6 @@ form.addEventListener('submit', async (event) => {
     }
     if (email === "" || password === "") {
         errorGlobal.textContent("Erreur :Veuillez remplir tout les champs");
-        // créer un p dans le html avec id error message, qui se rempli avec text content ici
         return;
     }
 
@@ -57,13 +53,10 @@ form.addEventListener('submit', async (event) => {
                 headers: { "Content-Type": "application/json" }
             });
         if (response.ok) {
-            const data = await response.json(); //je transforme la reponse(token+userid) recu de l'api en json
+            const data = await response.json();
             localStorage.setItem("token", data.token);
-            //je crée ici un enregistrement de la reponse de lapi.("la clé",et la valeur à enregistrer)   
-            // transformer la reponse en json, le token dans localStorage et ensuite je renvoie sur page accueil(windowlocation)  
-            window.location.href = "index.html"; //je redirige le user vers accueil
+            window.location.href = "index.html";
         } else {
-            // message derreur dans le p disant que erreur dans id et ou mdp
             errorGlobal.textContent = "Erreur dans l'identifiant ou le mot de passe."
         }
     } catch (error) {
@@ -72,10 +65,3 @@ form.addEventListener('submit', async (event) => {
     }
 
 });
-
-
-
-
-
-
-

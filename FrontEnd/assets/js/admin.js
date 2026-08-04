@@ -11,9 +11,8 @@ const modalFormContainer = document.getElementById("modal-add-form");
 const formTitle = document.getElementById("form-title");
 const selectCategory = document.getElementById("form-category");
 const btnSubmitPhoto = document.getElementById("btn-submit-photo");
-
 const uploadElements = modalFormContainer ? modalFormContainer.querySelectorAll(".upload-container > i, .upload-container > label, .upload-container > p") : [];
-// si modalformcontainer est trouvé alors lance recherche sinon les [] veulent dire que renvoie tableau vide pour eviter bug/plantage 
+
 
 // 1. CREATION DU MODE EDITION
 if (token) {
@@ -65,7 +64,7 @@ if (btnAddForm && btnBack && viewGallery && viewAddPhoto) {
         viewGallery.style.display = "block";
         viewAddPhoto.style.display = "none";
         btnBack.style.visibility = "hidden";
-        modalFormContainer.reset(); // vide les champs si on fait retour
+        modalFormContainer.reset(); 
         if (imagePreview) {
             imagePreview.src = "";
             imagePreview.style.display = "none";
@@ -261,9 +260,6 @@ function checkFormValidity() {
 // ecouteur unique pour la selection du fichier et generer l'aperçu
 if (fileInput && imagePreview) {
     fileInput.addEventListener("change", (e) => {
-        const file = e.target.files[0];
-        // ici je verifie si les fichier existe dans le dom, puis ecoute le changement/selection du fichier 
-        // puis recup fichier selectionné par user le 1er et le seul
         if (file) {
             if (file.size > 4 * 1024 * 1024) {
                 alert("L'image est trop lourde (4 Mo maximum).");
@@ -272,7 +268,7 @@ if (fileInput && imagePreview) {
                 return;
             }
             const reader = new FileReader();
-            // (reader) permet de lire les fichiers presents sur l'ordinateur de user
+            // (reader) permet de lire les fichiers presents sur l'ordinateur du user
             reader.onload = (event) => {
                 imagePreview.src = event.target.result;
                 // ca donne le lien temporaire géneré a la balise <img>
@@ -280,7 +276,6 @@ if (fileInput && imagePreview) {
                 uploadElements.forEach(el => el.style.display = "none");
             };
             reader.readAsDataURL(file);
-            // je dis a js de prendre le fichier image et de le transformer en un lien temporaire pour que le navigateur puisse l'afficher
         }
         else {
             imagePreview.src = "";
@@ -291,25 +286,7 @@ if (fileInput && imagePreview) {
     });
 }
 
-
-// le  non rechargement de la page après depot image
-//     const form = document.getElementById("modal-add-form")
-//     form.addEventListener("submit", async (event) => {
-//         event.preventDefault();
-//         form.reset();
-//         if (imagePreview) {
-//             imagePreview.src = "";
-//             imagePreview.style.display = "none";
-//         }
-//         if (uploadElements) {
-//             uploadElements.forEach(el => el.style.display = "block");
-//         }
-//         checkFormValidity();
-//     });
-
-
 // mise a jour galerie avec ajout de la nouvelle photo
-
 modalFormContainer.addEventListener('submit', async (event) => {
     event.preventDefault();
     console.log("-----test des selecteurs------")
