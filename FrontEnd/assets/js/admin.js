@@ -65,7 +65,15 @@ if (btnAddForm && btnBack && viewGallery && viewAddPhoto) {
         viewGallery.style.display = "block";
         viewAddPhoto.style.display = "none";
         btnBack.style.visibility = "hidden";
-        resetFormPreview(); // vide les champs si on fait retour
+        modalFormContainer.reset(); // vide les champs si on fait retour
+        if (imagePreview) {
+            imagePreview.src = "";
+            imagePreview.style.display = "none";
+        }
+        if (uploadElements) {
+            uploadElements.forEach(el => el.style.display = "block");
+        }
+        checkFormValidity();
     });
 }
 
@@ -327,7 +335,7 @@ modalFormContainer.addEventListener('submit', async (event) => {
             body: formData
         });
         if (response.ok) {
-            const newWork = await response.json(); 
+            const newWork = await response.json();
             modalFormContainer.reset();
             if (imagePreview) {
                 imagePreview.src = "";
@@ -336,8 +344,13 @@ modalFormContainer.addEventListener('submit', async (event) => {
             if (uploadElements) {
                 uploadElements.forEach(el => el.style.display = "block");
             }
-            await loadGallery();
+            checkFormValidity();
+            if (typeof window.getWorks === "function") { await window.getWorks(); }
+            if (typeof loadModalGallery === "function") {
+                await loadModalGallery();
+            }
         }
+
         else {
             console.error("erreur lors du depot du projet");
         }
