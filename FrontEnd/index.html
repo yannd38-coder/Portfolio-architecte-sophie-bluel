@@ -22,10 +22,10 @@
 		<h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
 		<nav>
 			<ul>
-				<li><a href="index.html">projets</a></li>
-				<li>contact</li>
-				<li><a href="login.html" id="nav-login">login</a></li>
-				<li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
+				<li><a href="#portfolio">projets</a></li>
+				<li><a href="#contact">contact</a></li>
+				<li><a href="login.html">login</a></li>
+				<li><a href="#"><img src="./assets/icons/instagram.png" alt="Instagram"></a></li>
 			</ul>
 		</nav>
 	</header>
@@ -99,7 +99,7 @@
 				<button id="btn-add-form" class="modal-submit-btn" type="button">Ajouter une photo</button>
 			</div>
 			<div id="modal-view-add" class="modal-view" style="display: none;">
-
+				<h3>Ajout photo</h3>
 				<form id="modal-add-form">
 					<!-- Zone d'upload et d'aperçu de l'image -->
 					<div class="upload-container">
@@ -110,20 +110,21 @@
 						<p class="upload-info">jpg, png : 4mo max</p>
 						<!-- Balise img dédiée à la preview avec FileReader -->
 						<img id="image-preview" src="#" alt="Aperçu de la photo" style="display: none;" />
-						 <p id="error-fileAdd" class="missed-fileAdd"></p>
+						<p id="error-fileAdd" class="missed-fileAdd"></p>
 					</div>
 
 					<div class="form-group">
 						<label for="form-title">Titre</label>
 						<input type="text" id="form-title" required>
-						 <p id="error-title" class="missed-text"></p>
+						<p id="error-title" class="missed-text"></p>
 					</div>
+					<!-- APRÈS -->
 					<div class="form-group">
 						<label for="form-category">Catégorie</label>
 						<select id="form-category" required>
 							<option value=""></option>
-							 <p id="error-category" class="missed-category"></p>
 						</select>
+						<p id="error-category" class="missed-category"></p>
 					</div>
 					<hr class="modal-separator">
 					<input type="submit" id="btn-submit-photo" value="Valider" class="modal-submit-btn" disabled>

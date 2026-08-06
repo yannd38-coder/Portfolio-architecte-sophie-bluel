@@ -45,12 +45,11 @@ if (token) {
     if (portfolioTitle) {
         const modifyBtn = document.createElement("span");
         modifyBtn.className = "modifyBtn";
-        modifyBtn.style.cursor = "pointer";
         modifyBtn.innerHTML = '<i class="fa-regular fa-pen-to-square"></i> modifier';
         portfolioTitle.appendChild(modifyBtn);
     }
 }
-// 5. NAVIGATION INTERNE DE LA MODALE
+// 2. NAVIGATION INTERNE DE LA MODALE
 
 
 if (btnAddForm && btnBack && viewGallery && viewAddPhoto) {
@@ -64,7 +63,7 @@ if (btnAddForm && btnBack && viewGallery && viewAddPhoto) {
         viewGallery.style.display = "block";
         viewAddPhoto.style.display = "none";
         btnBack.style.visibility = "hidden";
-        modalFormContainer.reset(); 
+        modalFormContainer.reset();
         if (imagePreview) {
             imagePreview.src = "";
             imagePreview.style.display = "none";
@@ -76,7 +75,7 @@ if (btnAddForm && btnBack && viewGallery && viewAddPhoto) {
     });
 }
 
-// 2. OUVERTURE / FERMETURE DE LA FENÊTRE MODALE
+// 3. OUVERTURE / FERMETURE DE LA FENÊTRE MODALE
 
 const modifyButton = document.querySelector(".modifyBtn");
 
@@ -110,7 +109,7 @@ if (modal) {
 }
 
 
-// 3. RECUPERATION ET AFFICHAGE DE LA GALERIE DE LA MODALE
+// 4. RECUPERATION ET AFFICHAGE DE LA GALERIE DE LA MODALE
 async function loadModalGallery() {
     const modalGallery = document.querySelector("#modal-add .modal-gallery");
     if (!modalGallery) return;
@@ -152,7 +151,7 @@ async function loadModalGallery() {
     }
 }
 
-// 4. SUPPRESSION D'UN PROJET
+// 5. SUPPRESSION D'UN PROJET
 async function deleteWorks(id, figureElement) {
     const token = localStorage.getItem("token");
 
@@ -219,13 +218,13 @@ async function loadCategory() {
 }
 loadCategory();
 
-// verif globale de validité du formulaire
+// Verif de la validité du formulaire
 function checkFormValidity() {
     if (!btnSubmitPhoto) return;
     const errorFileAdd = document.getElementById("error-fileAdd");
     const errorTitle = document.getElementById("error-title");
     const errorCategory = document.getElementById("error-category");
-    //    verif de l'ajout du fichier
+    // verif de l'ajout du fichier
     const isFileValid = fileInput && fileInput.files && fileInput.files[0];
     if (!isFileValid) {
         if (errorFileAdd) errorFileAdd.textContent = "veuillez ajouter un fichier";
@@ -249,7 +248,7 @@ function checkFormValidity() {
     else {
         if (errorCategory) errorCategory.textContent = "";
     }
-    // verif finale et globale
+    // verif globale
     if (isFileValid && isTitleValid && isCategoryValid) {
         btnSubmitPhoto.disabled = false;
     } else {
@@ -260,6 +259,7 @@ function checkFormValidity() {
 // ecouteur unique pour la selection du fichier et generer l'aperçu
 if (fileInput && imagePreview) {
     fileInput.addEventListener("change", (e) => {
+        const file = e.target.files[0];
         if (file) {
             if (file.size > 4 * 1024 * 1024) {
                 alert("L'image est trop lourde (4 Mo maximum).");
@@ -286,7 +286,7 @@ if (fileInput && imagePreview) {
     });
 }
 
-// mise a jour galerie avec ajout de la nouvelle photo
+// 7. MISE A JOUR DE LA GALERIE LORS DE NOUVEAU PROJET
 modalFormContainer.addEventListener('submit', async (event) => {
     event.preventDefault();
     console.log("-----test des selecteurs------")
@@ -337,6 +337,7 @@ modalFormContainer.addEventListener('submit', async (event) => {
     }
 
 });
+
 // ecouteur d'evenements pour titre+category
 if (formTitle) {
     formTitle.addEventListener("input", checkFormValidity);
