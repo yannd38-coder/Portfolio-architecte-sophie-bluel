@@ -49,6 +49,7 @@ dialog#modal-container::backdrop {
     cursor: pointer;
     font-size: 20px;
     color: #000000;
+    outline: none;
 }
 
 .modal-view h3 {

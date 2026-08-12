@@ -1,5 +1,5 @@
 let works = [];
-//RECUPERATION ET MISE PLACE DES PROJETS
+//1. RECUPERATION ET MISE PLACE DES PROJETS
 async function getWorks() {
     try {
         const response = await fetch("http://localhost:5678/api/works");
@@ -22,26 +22,26 @@ function displayWorks(works) {
 getWorks()
 
 
-//AJOUT DES FILTRES
+//2. AJOUT DES FILTRES
 async function getCategories() {
     const response = await fetch("http://localhost:5678/api/categories");
     const categories = await response.json();
-    console.log(categories);
-    displayCategory()
-    sortWorksByCategory()
+    displayCategory();
+    sortWorksByCategory();
 }
-
 getCategories()
+
 function displayCategory() {
 }
 
 function sortWorksByCategory() {
-    let listboutons = document.querySelectorAll(".filter button")  
+    let listboutons = document.querySelectorAll(".filter button")
     for (let i = 0; i < listboutons.length; i++) {
-        let boutonActuel = listboutons[i]; console.log(boutonActuel);
+        let boutonActuel = listboutons[i];
         boutonActuel.addEventListener("click", (event) => {
-            const monBouton = event.target
-            console.log(`Utilisateur clique sur le bouton: ${monBouton.getAttribute("data-categoryId")}`);
+            const monBouton = event.target;
+            listboutons.forEach(btn => btn.classList.remove("active"));
+            monBouton.classList.add("active");
             document.querySelector(".gallery").innerHTML = "";
             const categoryIdChoisie = monBouton.dataset.categoryid;
             if (categoryIdChoisie === "0") {

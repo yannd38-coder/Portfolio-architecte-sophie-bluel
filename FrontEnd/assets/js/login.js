@@ -1,3 +1,5 @@
+// 1. SÉLECTION DES ÉLÉMENTS DU DOM
+
 const form = document.querySelector('form');
 const baliseEmail = document.getElementById("email");
 const balisePassword = document.getElementById("password");
@@ -5,63 +7,61 @@ const errorEmail = document.getElementById("error-email");
 const errorPassword = document.getElementById("error-password");
 const errorGlobal = document.getElementById("error-global");
 
-
+// 2. ÉCOUTEUR D'ÉVÉNEMENT SUR LE FORMULAIRE
 form.addEventListener('submit', async (event) => {
-    event.preventDefault(); console.log("pas de rechargement de page ici");
-    errorEmail.textContent = ""
-    errorPassword.textContent = ""
-    errorGlobal.textContent = ""
-    const email = baliseEmail.value;
-    const password = balisePassword.value;
-    console.log(password);
-    console.log(email);
+    event.preventDefault();
 
+    // 3. RÉINITIALISATION DES MESSAGES D'ERREUR
+    if (errorEmail) errorEmail.textContent = "";
+    if (errorPassword) errorPassword.textContent = "";
+    if (errorGlobal) errorGlobal.textContent = "";
 
-    const emailRegExp = new RegExp("^[a-z0-9._-]+@[a-z0-9._-]+\\.[a-z]+$");
-    if (emailRegExp.test(email)) {
-        baliseEmail.classList.remove("error");
-        console.log("le format est valide");
-    } else {
-        baliseEmail.classList.add("error");
-        console.log("Erreur : Le format de l'email n'est pas valide");
-        errorEmail.textContent("Le format de l'email n'est pas valide");
-    }
+    baliseEmail.classList.remove("error");
+    balisePassword.classList.remove("error");
 
-    if (password.trim() !== "") {
-        balisePassword.classList.remove("error");
-        console.log("le format est valide");
-        if (errorPassword) errorPassword.textContent = "";
-    } else {
-        balisePassword.classList.add("error");
-        console.log("Erreur : Le mot de passe ne peut pas être vide");
-        if (errorPassword) errorPassword.textContent = "Erreur : Le mot de passe ne peut pas être vide";
-    }
+    // Récupération + nettoyage des valeurs (retrait des espaces inutiles)
+    const email = baliseEmail.value.trim();
+    const password = balisePassword.value.trim();
+
+    // 4. VÉRIFICATION DES CHAMPS VIDES
     if (email === "" || password === "") {
-        errorGlobal.textContent("Erreur :Veuillez remplir tout les champs");
+        if (errorGlobal) errorGlobal.textContent = "Erreur : Veuillez remplir tous les champs";
+        if (email === "") baliseEmail.classList.add("error");
+        if (password === "") balisePassword.classList.add("error");
         return;
     }
 
+    // 5. VALIDATION FORMAT EMAIL
+    const emailRegExp = new RegExp("^[a-z0-9._-]+@[a-z0-9._-]+\\.[a-z]+$", "i");
+    if (!emailRegExp.test(email)) {
+        baliseEmail.classList.add("error");
+        if (errorEmail) errorEmail.textContent = "Le format de l'email n'est pas valide";
+        return;
+    }
+
+    // 6. REQUÊTE ASYNCHRONE D'AUTHENTIFICATION (FETCH API)
     try {
-        const response = await fetch("http://localhost:5678/api/users/login",
-            {
-                method: "POST",
-                body: JSON.stringify(
-                    {
-                        email: email,
-                        password: password
-                    }),
-                headers: { "Content-Type": "application/json" }
-            });
+        const response = await fetch("http://localhost:5678/api/users/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                email: email,
+                password: password
+            })
+        });
+
+        // 7. GESTION DE LA RÉPONSE SERVEUR
         if (response.ok) {
             const data = await response.json();
             localStorage.setItem("token", data.token);
+            // Redirection vers la page d'accueil
             window.location.href = "index.html";
         } else {
-            errorGlobal.textContent = "Erreur dans l'identifiant ou le mot de passe."
+            // Statut 401 ou 404 (Identifiants incorrects)
+            if (errorGlobal) errorGlobal.textContent = "Erreur dans l'identifiant ou le mot de passe.";
         }
     } catch (error) {
-        console.log(error)
-        errorGlobal.textContent = "Erreur de connexion serveur."
+        // Erreur réseau / serveur inaccessible
+        if (errorGlobal) errorGlobal.textContent = "Erreur de connexion au serveur.";
     }
-
 });

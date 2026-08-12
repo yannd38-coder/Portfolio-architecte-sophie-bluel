@@ -23,7 +23,7 @@ if (token) {
     headerAdmin.innerHTML = '<i class="fa-regular fa-pen-to-square"></i> Mode édition';
     body.prepend(headerAdmin);
 
-    // Bouton logout
+    // bouton logout
     const loginLink = document.querySelector("nav ul li a[href='login.html']");
     if (loginLink) {
         loginLink.textContent = "logout";
@@ -49,8 +49,9 @@ if (token) {
         portfolioTitle.appendChild(modifyBtn);
     }
 }
-// 2. NAVIGATION INTERNE DE LA MODALE
 
+
+// 2. NAVIGATION INTERNE DE LA MODALE
 
 if (btnAddForm && btnBack && viewGallery && viewAddPhoto) {
     btnAddForm.addEventListener("click", () => {
@@ -75,10 +76,10 @@ if (btnAddForm && btnBack && viewGallery && viewAddPhoto) {
     });
 }
 
+
 // 3. OUVERTURE / FERMETURE DE LA FENÊTRE MODALE
 
 const modifyButton = document.querySelector(".modifyBtn");
-
 
 if (modifyButton) {
     modifyButton.addEventListener("click", () => {
@@ -110,6 +111,7 @@ if (modal) {
 
 
 // 4. RECUPERATION ET AFFICHAGE DE LA GALERIE DE LA MODALE
+
 async function loadModalGallery() {
     const modalGallery = document.querySelector("#modal-add .modal-gallery");
     if (!modalGallery) return;
@@ -151,7 +153,9 @@ async function loadModalGallery() {
     }
 }
 
+
 // 5. SUPPRESSION D'UN PROJET
+
 async function deleteWorks(id, figureElement) {
     const token = localStorage.getItem("token");
 
@@ -182,8 +186,6 @@ async function deleteWorks(id, figureElement) {
             } catch (err) {
                 console.error("Erreur lors du rafraichissement de la galerie :", err);
             }
-
-            console.log(`Le projet ${id} a été supprimé avec succès.`);
         } else {
             console.error("Impossible de supprimer le projet. Code erreur :", response.status);
         }
@@ -193,7 +195,8 @@ async function deleteWorks(id, figureElement) {
 }
 
 
-// 6. GESTION DU FORMULAIRE D'AJOUT (PREVIEW UNIFIÉE & VALIDATION)
+// 6. GESTION DU FORMULAIRE D'AJOUT (PREVIEW & VALIDATION)
+
 async function loadCategory() {
     const categorySelect = document.getElementById("form-category");
     if (!categorySelect) return;
@@ -260,43 +263,53 @@ function checkFormValidity() {
 if (fileInput && imagePreview) {
     fileInput.addEventListener("change", (e) => {
         const file = e.target.files[0];
+        const errorMsg = document.getElementById("error-fileAdd");
+
         if (file) {
-            if (file.size > 4 * 1024 * 1024) {
-                alert("L'image est trop lourde (4 Mo maximum).");
+            if (errorMsg) errorMsg.textContent = "";
+
+            // 1. controle du format
+            const validFormats = ["image/jpeg", "image/png"];
+            if (!validFormats.includes(file.type)) {
+                if (errorMsg) errorMsg.textContent = "Format invalide. Veuillez choisir une image JPG ou PNG.";
                 fileInput.value = "";
                 checkFormValidity();
                 return;
             }
+
+            // 2. controle du poids
+            if (file.size > 4 * 1024 * 1024) {
+                if (errorMsg) errorMsg.textContent = "L'image est trop lourde (4 Mo maximum).";
+                fileInput.value = "";
+                checkFormValidity();
+                return;
+            }
+
+            // 3. previsualisation
             const reader = new FileReader();
-            // (reader) permet de lire les fichiers presents sur l'ordinateur du user
             reader.onload = (event) => {
                 imagePreview.src = event.target.result;
-                // ca donne le lien temporaire géneré a la balise <img>
                 imagePreview.style.display = "block";
                 uploadElements.forEach(el => el.style.display = "none");
             };
             reader.readAsDataURL(file);
-        }
-        else {
+
+        } else {
             imagePreview.src = "";
             imagePreview.style.display = "none";
             uploadElements.forEach(el => el.style.display = "block");
         }
+
         checkFormValidity();
     });
 }
 
+
 // 7. MISE A JOUR DE LA GALERIE LORS DE NOUVEAU PROJET
+
 modalFormContainer.addEventListener('submit', async (event) => {
     event.preventDefault();
-    console.log("-----test des selecteurs------")
-    console.log("element fileInput", fileInput);
-    console.log("fichier selectionné", fileInput ? fileInput.files[0] : "file input introuvable");
-    console.log("valeur du titre", formTitle ? formTitle.value : "formTitle introuvable");
-    console.log("valeur categorie", selectCategory ? selectCategory.value : "selectCategory introuvable")
-    console.log("---------");
     const formData = new FormData();
-    // FormData me permet regrouper toutes les infos du formulaire
     formData.append("image", fileInput.files[0]);
     // append permet ajout avec la clé (le nom vu dans les swagger)+la valeur
     formData.append("title", formTitle.value.trim());

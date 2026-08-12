@@ -138,7 +138,6 @@ body {
 	margin: auto;
 	font-family: 'Work Sans';
 	font-size: 14px;
-	/* line-height: 1; */
 	overflow-x: hidden;
 }
 
@@ -261,42 +260,49 @@ nav ul li .fa-instagram {
 
 
 .filter {
-	width: 585px;
-	height: 38px;
-	display: flex;
-	gap: 15px;
-	justify-content: center;
-	margin-top: 30px;
-	margin-bottom: 50px;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 30px;
+    margin-bottom: 50px;
+    width: 100%;
 }
 
-button {
-
-	/* width: 100px; */
-	height: 37px;
-	border-radius: 60px;
-	border-width: 1px;
-	color: #1D6154;
-	background-color: #FFFFFF;
-	border: 1px solid
-}
 
 .filter button {
-	font-family: Syne;
-	font-weight: 700;
-	font-style: Bold;
-	font-size: 16px;
-	line-height: 100%;
-	letter-spacing: 0%;
-	text-align: center;
-	cursor: pointer;
-	display: inline-block;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    min-height: 37px;
+    padding: 9px 20px;
+    border-radius: 60px;
+    color: #1D6154;
+    background-color: #FFFFFF;
+    border: 1px solid #1D6154;
+    text-align: center;
+    cursor: pointer;
+    box-sizing: border-box;
+    transition: all 0.2s ease-in-out;
 }
 
-button:hover {
+.filter button .filter-btn {
+	font-family: 'Syne', sans-serif;
+	font-weight: 700;
+	font-size: 16px;
+	height: 37px;
+	border-radius: 60px;
+	color: #1D6154;
+	background-color: #FFFFFF;
+	border: 1px solid #1D6154;
+	padding: 0 20px;
+	text-align: center;
+	cursor: pointer;
+}
+
+.filter-btn.active,
+.filter-btn:hover {
 	background-color: #1D6154;
 	color: #FFFFFF;
-	opacity: 1;
 }
 
 #contact {
