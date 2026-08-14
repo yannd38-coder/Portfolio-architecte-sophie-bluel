@@ -42,7 +42,6 @@ function sortWorksByCategory() {
             const monBouton = event.target;
             listboutons.forEach(btn => btn.classList.remove("active"));
             monBouton.classList.add("active");
-            document.querySelector(".gallery").innerHTML = "";
             const categoryIdChoisie = monBouton.dataset.categoryid;
             if (categoryIdChoisie === "0") {
                 displayWorks(works);
