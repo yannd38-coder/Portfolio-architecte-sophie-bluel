@@ -11,27 +11,49 @@ async function getWorks() {
     }
 }
 
-function displayWorks(works) {
+function displayWorks(worksToDisplay) {
     const gallery = document.querySelector(".gallery");
     gallery.innerHTML = "";
-    works.forEach(work => {
+    worksToDisplay.forEach(work => {
         gallery.innerHTML += `<figure><img src= "${work.imageUrl}" alt="${work.title}"><figcaption>${work.title}</figcaption></figure>`
 
     })
 }
-getWorks()
+
 
 
 //2. AJOUT DES FILTRES
 async function getCategories() {
-    const response = await fetch("http://localhost:5678/api/categories");
-    const categories = await response.json();
-    displayCategory();
-    sortWorksByCategory();
+    try {
+        const response = await fetch("http://localhost:5678/api/categories");
+        const categories = await response.json();
+        displayCategory(categories);
+        sortWorksByCategory();
+    }
+    catch (error) {
+        console.error("Erreur lors de recuperation des categories", error);
+    }
 }
-getCategories()
 
-function displayCategory() {
+
+
+function displayCategory(categories) {
+    const filterContainer = document.querySelector(".filter");
+    filterContainer.innerHTML = "";
+    // Le bouton TOUS
+    const btnAll = document.createElement("button");
+    btnAll.className = "filter-btn active";
+    btnAll.dataset.categoryId = "0";
+    btnAll.textContent = "Tous";
+    filterContainer.appendChild(btnAll);
+    // Les autres boutons de filtrage
+    categories.forEach(category => {
+        const button = document.createElement("button");
+        button.className = "filter-btn";
+        button.dataset.categoryId = category.id;
+        button.textContent = category.name;
+        filterContainer.appendChild(button);
+    });
 }
 
 function sortWorksByCategory() {
@@ -42,7 +64,7 @@ function sortWorksByCategory() {
             const monBouton = event.target;
             listboutons.forEach(btn => btn.classList.remove("active"));
             monBouton.classList.add("active");
-            const categoryIdChoisie = monBouton.dataset.categoryid;
+            const categoryIdChoisie = monBouton.dataset.categoryId;
             if (categoryIdChoisie === "0") {
                 displayWorks(works);
             } else {
@@ -51,6 +73,8 @@ function sortWorksByCategory() {
             }
         })
     }
-    window.displayWorks = displayWorks;
-    window.getWorks = getWorks;
 }
+getWorks()
+getCategories()
+window.displayWorks = displayWorks;
+window.getWorks = getWorks;
